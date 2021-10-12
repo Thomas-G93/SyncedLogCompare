@@ -14,6 +14,20 @@ namespace SyncedLogCompare
         [STAThread]
         static void Main()
         {
+
+            // ----- TEST -----
+            LogHandler logHandler = new LogHandler("C:\\Users\\Thomas\\localgit\\work\\logcompare\\data.test\\logfiles_debug\\");
+
+            logHandler.LoadLogFileEntries("messages.prn");
+
+            // ----------------
+
+
+
+
+
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
