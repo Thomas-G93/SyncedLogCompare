@@ -30,8 +30,9 @@ namespace SyncedLogCompare
                 // for split of array
                 char[] separator = { ';' };
 
-                //TODO - write code to evaluate MESSAGE or TBTRACER => rework of LogEntry then needed
-                Int32 parts = 4;
+                //TODO - check how this can be more generic - since this is basically check for the FileType, no point of making this "calculation" twice...
+                var parts = fileName.ToLower().StartsWith("tbtracer") ? 5 : 4;
+
 
                 StringBuilder bufferLine = new StringBuilder();
 
@@ -59,14 +60,36 @@ namespace SyncedLogCompare
                     String[] splitLine = bufferLine.ToString().Split(separator, parts, StringSplitOptions.None);
 
 
-                     
+                    /* 
                     foreach (var item in splitLine) // DEBUG
                     {
                         Console.Write(item.ToString() + " | ");   
                     }
                     Console.WriteLine();
-                
-                    //TODO - add log entry
+                    */
+                    
+                    //TODO - move to private method
+
+                    if (parts == 4) //MESSAGE
+                    {
+                        String severity = splitLine[0].Trim();
+                        String dateTime = splitLine[1].Trim();
+                        String from = splitLine[2].Trim();
+                        String message = splitLine[3].Trim();
+
+                        list.Add(new LogEntry(severity, dateTime, from, message, fileName));
+                    }
+                    else //TBTRACER //TODO - what if we have more types?
+                    {
+                        String severity = splitLine[0].Trim();
+                        String dateTime = splitLine[1].Trim();
+                        String component = splitLine[2].Trim();
+                        String device = splitLine[3].Trim();
+                        String message = splitLine[4].Trim();
+
+                        list.Add(new LogEntry(severity, dateTime, component, device, message, fileName));
+
+                    }
 
                 }
             }

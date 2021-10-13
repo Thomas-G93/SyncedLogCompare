@@ -19,7 +19,94 @@ namespace SyncedLogCompare
 
         private void onButtonClick(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("Test");
+            Console.WriteLine("onButtonClick");
+
+
+            InitializeResizingListView();
+
+            listView1.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
+            listView1.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            
+
+
+            //DEBUG ################################################
+            #region ListViewTest_DEBUG_ONLY 
+
+            LogHandler logHandler = new LogHandler("C:\\Users\\Thomas\\localgit\\work\\logcompare\\data.test\\logfiles_debug\\");
+
+            List<LogEntry> list = new List<LogEntry>();
+
+            list = logHandler.LoadLogFileEntries("messages.prn");
+
+            listView1.Columns.Add("Severity", -2, HorizontalAlignment.Left);
+            listView1.Columns.Add("Time", -2, HorizontalAlignment.Left);
+            listView1.Columns.Add("From", -2, HorizontalAlignment.Left);
+            listView1.Columns.Add("Message", -2, HorizontalAlignment.Left);
+
+            var item1 = new ListViewItem(new[] {"severity1", "dateTime1", "form1", "message1"});
+            var item2 = new ListViewItem(new[] { "severity2", "dateTime2", "form2", "message2" });
+            var item3 = new ListViewItem(new[] { "severity3", "dateTime3", "form3", "message3" });
+
+            listView1.Items.Add(item1);
+            listView1.Items.Add(item2);
+            listView1.Items.Add(item3);
+
+
+            /*
+             * var item1 = new ListViewItem(new[] {"id123", "Tom", "24"});
+                var item2 = new ListViewItem(new[] {person.Id, person.Name, person.Age});
+                lvRegAnimals.Items.Add(item1);
+                lvRegAnimals.Items.Add(item2);
+             */
+
+
+
+            foreach (var entry in list)
+            {
+             //   Console.WriteLine(entry.ToString());
+             //   listView1.Items.Add(entry.ToString());
+            }
+            
+
+            
+
+            #endregion
+
+
         }
+
+
+        private void InitializeResizingListView()
+        {
+
+            // Set the ListView to details view.
+            listView1.View = View.Details;
+
+            //Set size, location and populate the ListView.
+            listView1.Size = new Size(200, 100);
+            listView1.Location = new Point(40, 40);
+            listView1.Columns.Add("HeaderSize");
+            listView1.Columns.Add("ColumnContent");
+            ListViewItem listItem1 = new ListViewItem("Short");
+            ListViewItem listItem2 = new ListViewItem("Tiny");
+            listItem1.SubItems.Add(new ListViewItem.ListViewSubItem(listItem1, "Something longer"));
+            listItem2.SubItems.Add(new ListViewItem.ListViewSubItem(listItem2, "Something even longer"));
+            listView1.Items.Add(listItem1);
+            listView1.Items.Add(listItem2);
+
+            listView1.GridLines = true;
+            listView1.AllowColumnReorder = true;
+            listView1.LabelEdit = true;
+            listView1.FullRowSelect = true;
+            listView1.Sorting = SortOrder.Ascending;
+            listView1.View = View.Details;
+
+
+
+        }
+
+
+
     }
 }

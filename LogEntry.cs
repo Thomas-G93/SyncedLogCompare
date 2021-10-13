@@ -28,30 +28,40 @@ namespace SyncedLogCompare
         private FileType _fileType;
 
 
-        public LogEntry(string severity, string dateTime, string from, string component, string device, string message, string fileName)
+        //TODO - add NULL check in Constructor
+
+        public LogEntry(string severity, string dateTime, string component, string device, string message, string fileName)
         {
-            _severity = severity ?? throw new ArgumentNullException(nameof(severity));
-            _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
-            _from = from;
+            //TBTRACER
+            _severity = severity;
+            _dateTime = dateTime;
             _component = component;
             _device = device;
-            _message = message ?? throw new ArgumentNullException(nameof(message));
-            _fileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            _message = message;
+            _fileName = fileName;
 
-            //TODO - Extract this FileType decision out of this Constructor, to be more flexible in the future?
-            if (fileName.ToLower().StartsWith("tbtracer"))
-            {
-                _fileType = FileType.TBTracer;
-            } 
-            else if (fileName.ToLower().StartsWith("message")) 
-            {
-                _fileType = FileType.Message;
-            }
-            else
-            {
-                _fileType = FileType.Unidentified;
-            }
+            //TODO - more elegant way needed, since FileType is "calculated" multiple times in the application
+            SetFileType(fileName);
         }
+
+        public LogEntry(string severity, string dateTime, string from, string message, string fileName)
+        {
+            //MESSAGE
+            _severity = severity;
+            _dateTime = dateTime;
+            _from = from;
+            _message = message;
+            _fileName = fileName;
+
+            SetFileType(fileName);
+        }
+
+
+        public override string ToString()
+        {
+            return $"{nameof(Severity)}: {Severity}, {nameof(DateTime)}: {DateTime}, {nameof(Message)}: {Message}, {nameof(From)}: {From}, {nameof(Component)}: {Component}, {nameof(Device)}: {Device}";
+        }
+
 
         public string Severity => _severity;
 
@@ -68,6 +78,25 @@ namespace SyncedLogCompare
         public string FileName => _fileName;
 
         public FileType FileType => _fileType;
+
+
+        private FileType SetFileType(string fileName)
+        {
+            if (fileName.ToLower().StartsWith("tbtracer"))
+            {
+                return FileType.TBTracer;
+            }
+            else if (fileName.ToLower().StartsWith("message"))
+            {
+                return FileType.Message;
+            }
+            else
+            {
+                return FileType.Unidentified;
+            }
+
+        }
+
     }
 
 
