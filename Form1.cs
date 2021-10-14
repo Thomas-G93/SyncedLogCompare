@@ -23,6 +23,7 @@ namespace SyncedLogCompare
 
 
             InitializeResizingListView();
+            InitializeDataGridView();
 
             listView1.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
             listView1.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -51,6 +52,15 @@ namespace SyncedLogCompare
             listView1.Items.Add(item1);
             listView1.Items.Add(item2);
             listView1.Items.Add(item3);
+
+
+            dataGridView1.Columns.Add("columnName", "headerText");
+            dataGridView1.Columns.Add("columnName2", "headerText2");
+            dataGridView1.Columns.Add("columnName3", "headerText3");
+            dataGridView1.Columns.Add("columnName4", "headerText4");
+
+            
+
 
 
             /*
@@ -101,6 +111,22 @@ namespace SyncedLogCompare
             listView1.FullRowSelect = true;
             listView1.Sorting = SortOrder.Ascending;
             listView1.View = View.Details;
+
+
+
+        }
+
+        private void InitializeDataGridView()
+        {
+
+            dataGridView1.BackgroundColor = Color.BlueViolet;
+            dataGridView1.BackColor = Color.Aqua;
+            dataGridView1.AllowUserToAddRows = false;
+
+            dataGridView1.GridColor = Color.Blue;
+
+
+            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridview?view=windowsdesktop-5.0
 
 
 

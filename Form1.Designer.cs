@@ -42,7 +42,7 @@ namespace SyncedLogCompare
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1105, 967);
+            this.button1.Location = new System.Drawing.Point(1050, 866);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(407, 97);
             this.button1.TabIndex = 1;
@@ -52,7 +52,8 @@ namespace SyncedLogCompare
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(64, 60);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -62,8 +63,8 @@ namespace SyncedLogCompare
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(1448, 837);
-            this.splitContainer1.SplitterDistance = 799;
+            this.splitContainer1.Size = new System.Drawing.Size(2036, 1078);
+            this.splitContainer1.SplitterDistance = 724;
             this.splitContainer1.TabIndex = 3;
             // 
             // listView1
@@ -72,7 +73,7 @@ namespace SyncedLogCompare
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(799, 837);
+            this.listView1.Size = new System.Drawing.Size(724, 1078);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -80,20 +81,21 @@ namespace SyncedLogCompare
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 59);
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 102;
             this.dataGridView1.RowTemplate.Height = 40;
-            this.dataGridView1.Size = new System.Drawing.Size(610, 595);
+            this.dataGridView1.Size = new System.Drawing.Size(1308, 1078);
             this.dataGridView1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1681, 1167);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(2036, 1078);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Synced Log Compare";
             this.splitContainer1.Panel1.ResumeLayout(false);
