@@ -126,6 +126,7 @@ namespace SyncedLogCompare
             dataGridView1.GridColor = Color.Blue;
 
 
+
             //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridview?view=windowsdesktop-5.0
 
 

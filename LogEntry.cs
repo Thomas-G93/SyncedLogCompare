@@ -30,6 +30,8 @@ namespace SyncedLogCompare
 
         //TODO - add NULL check in Constructor
 
+        //TODO - split again in two different classes? TBTRACER and MESSAGE
+
         public LogEntry(string severity, string dateTime, string component, string device, string message, string fileName)
         {
             //TBTRACER
