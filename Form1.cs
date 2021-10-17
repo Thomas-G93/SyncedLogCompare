@@ -133,28 +133,32 @@ namespace SyncedLogCompare
         }
 
 
-        //TODO - not working.... 
+        //TODO - works but only if the FileName Column is visible in the window....
         private void dgv_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // If the column is the Artist column, check the
             // value.
 
-            //Console.WriteLine("TEST: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name);
+            Console.WriteLine("TEST: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name);
 
 
-            if (this.dataGridViewMessage.Columns[e.ColumnIndex].Name == "TBTracer.log")
+            if (this.dataGridViewMessage.Columns[e.ColumnIndex].Name == "FileName")
             {
      
                 if (e.Value != null)
                 {
                     string stringValue = (string)e.Value;
+                    
                     Console.WriteLine(stringValue);
 
                     stringValue = stringValue.ToLower();
 
-                    if (stringValue.Equals(FileType.TBTracer.ToString()))
+                    if (stringValue.Equals("tbtracer.log"))
                     {
+                        e.CellStyle.SelectionBackColor = Color.Green;
                         e.CellStyle.BackColor = Color.Green;
+                        e.CellStyle.SelectionForeColor = Color.DarkGreen;
+                        e.CellStyle.ForeColor = Color.DarkGreen;
                     }
 
                 }
