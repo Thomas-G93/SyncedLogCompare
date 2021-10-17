@@ -166,6 +166,7 @@ namespace SyncedLogCompare
         }
 
 
+
         // Changes the foreground color of cells in the "Ratings" column 
         // depending on the number of stars. 
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
