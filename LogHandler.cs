@@ -10,22 +10,20 @@ namespace SyncedLogCompare
 {
     class LogHandler
     {
-        private String path;
+        private readonly string _path;
 
         public LogHandler(string path)
         {
-            this.path = path ?? throw new ArgumentNullException(nameof(path));
+            this._path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
 
         //TODO - Change to "private" when tests are completed
-        public List<LogEntry> LoadLogFileEntries(String fileName)
+        public List<LogEntry> LoadLogFileEntries(string fileName)
         {
             List<LogEntry> list = new List<LogEntry>();
 
-            
-
-            using (StreamReader sr = File.OpenText(path + "\\" + fileName))
+            using (StreamReader sr = File.OpenText(_path + "\\" + fileName))
             {
                 // for split of array
                 char[] separator = { ';' };
@@ -34,18 +32,18 @@ namespace SyncedLogCompare
                 var parts = fileName.ToLower().StartsWith("tbtracer") ? 5 : 4;
 
 
-                StringBuilder bufferLine = new StringBuilder();
-
-                string line = String.Empty;
+                var bufferLine = new StringBuilder();
+                string line;
 
                 sr.ReadLine(); // skip first line - useless information
                 sr.ReadLine(); // skip second line - empty
 
+                // Read in line by line
                 while ((line = sr.ReadLine()) != null)
                 {
                     //Console.WriteLine(@"Line: " + line); //DEBUG
 
-                    // Check if current line is a new log entry
+                    // Check if current line is a new log entry // Long lines could be split in two or more lines
                     if (BeginningOfEntry(line))
                     {
                         bufferLine = new StringBuilder(line);
@@ -56,20 +54,10 @@ namespace SyncedLogCompare
                         continue; // continue with next ReadLine() before String is split
                     }
 
-
+                    // Split String based on Separator and amount of Parts (based on FileType). 
                     String[] splitLine = bufferLine.ToString().Split(separator, parts, StringSplitOptions.None);
 
-
-                    /* 
-                    foreach (var item in splitLine) // DEBUG
-                    {
-                        Console.Write(item.ToString() + " | ");   
-                    }
-                    Console.WriteLine();
-                    */
-                    
-                    //TODO - move to private method
-
+                    //TODO - move to private method - "add Entry"
                     if (parts == 4) //MESSAGE
                     {
                         String severity = splitLine[0].Trim();
@@ -88,20 +76,16 @@ namespace SyncedLogCompare
                         String message = splitLine[4].Trim();
 
                         list.Add(new LogEntry(severity, dateTime, component, device, message, fileName));
-
                     }
 
                 }
             }
 
-
-
             return list;
-
 
         }
 
-        private Boolean BeginningOfEntry(String line)
+        private bool BeginningOfEntry(string line)
         {
             return line.StartsWith("(I)") || line.StartsWith("(W)") || line.StartsWith("(E)") || line.StartsWith("(A)");
         }

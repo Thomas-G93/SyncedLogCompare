@@ -15,19 +15,6 @@ namespace SyncedLogCompare
     }
     class LogEntry
     {
-        private String _severity;
-        private String _dateTime;
-        private String _message;
-
-        private String _from;        //only message log
-
-        private String _component;   //only tracer
-        private String _device;      //only tracer
-
-        private String _fileName;
-        private FileType _fileType;
-
-
         //TODO - add NULL check in Constructor
 
         //TODO - split again in two different classes? TBTRACER and MESSAGE
@@ -35,12 +22,12 @@ namespace SyncedLogCompare
         public LogEntry(string severity, string dateTime, string component, string device, string message, string fileName)
         {
             //TBTRACER
-            _severity = severity;
-            _dateTime = dateTime;
-            _component = component;
-            _device = device;
-            _message = message;
-            _fileName = fileName;
+            Severity = severity;
+            DateTime = dateTime;
+            Component = component;
+            Device = device;
+            Message = message;
+            FileName = fileName;
 
             //TODO - more elegant way needed, since FileType is "calculated" multiple times in the application
             SetFileType(fileName);
@@ -49,38 +36,35 @@ namespace SyncedLogCompare
         public LogEntry(string severity, string dateTime, string from, string message, string fileName)
         {
             //MESSAGE
-            _severity = severity;
-            _dateTime = dateTime;
-            _from = from;
-            _message = message;
-            _fileName = fileName;
+            Severity = severity;
+            DateTime = dateTime;
+            From = from;
+            Message = message;
+            FileName = fileName;
 
             SetFileType(fileName);
         }
-
 
         public override string ToString()
         {
             return $"{nameof(Severity)}: {Severity}, {nameof(DateTime)}: {DateTime}, {nameof(Message)}: {Message}, {nameof(From)}: {From}, {nameof(Component)}: {Component}, {nameof(Device)}: {Device}";
         }
 
+        public string Severity { get; }
 
-        public string Severity => _severity;
+        public string DateTime { get; }
 
-        public string DateTime => _dateTime;
+        public string Message { get; }
 
-        public string Message => _message;
+        public string From { get; }
 
-        public string From => _from;
+        public string Component { get; }
 
-        public string Component => _component;
+        public string Device { get; }
 
-        public string Device => _device;
+        public string FileName { get; }
 
-        public string FileName => _fileName;
-
-        public FileType FileType => _fileType;
-
+        public FileType FileType { get; }
 
         private FileType SetFileType(string fileName)
         {

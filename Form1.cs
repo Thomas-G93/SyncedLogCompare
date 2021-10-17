@@ -21,119 +21,128 @@ namespace SyncedLogCompare
         {
             Console.WriteLine("onButtonClick");
 
+            PopulateDataGridView(dataGridView1);
+            PopulateDataGridView(dataGridView2);
 
-            InitializeResizingListView();
-            InitializeDataGridView();
+            InitializeDataGridView(dataGridView1);
+            InitializeDataGridView(dataGridView2);
 
-            listView1.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
-            listView1.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
-
-            
-
-
-            //DEBUG ################################################
-            #region ListViewTest_DEBUG_ONLY 
-
-            LogHandler logHandler = new LogHandler("C:\\Users\\Thomas\\localgit\\work\\logcompare\\data.test\\logfiles_debug\\");
-
-            List<LogEntry> list = new List<LogEntry>();
-
-            list = logHandler.LoadLogFileEntries("messages.prn");
-
-            listView1.Columns.Add("Severity", -2, HorizontalAlignment.Left);
-            listView1.Columns.Add("Time", -2, HorizontalAlignment.Left);
-            listView1.Columns.Add("From", -2, HorizontalAlignment.Left);
-            listView1.Columns.Add("Message", -2, HorizontalAlignment.Left);
-
-            var item1 = new ListViewItem(new[] {"severity1", "dateTime1", "form1", "message1"});
-            var item2 = new ListViewItem(new[] { "severity2", "dateTime2", "form2", "message2" });
-            var item3 = new ListViewItem(new[] { "severity3", "dateTime3", "form3", "message3" });
-
-            listView1.Items.Add(item1);
-            listView1.Items.Add(item2);
-            listView1.Items.Add(item3);
+        }
 
 
-            dataGridView1.Columns.Add("columnName", "headerText");
-            dataGridView1.Columns.Add("columnName2", "headerText2");
-            dataGridView1.Columns.Add("columnName3", "headerText3");
-            dataGridView1.Columns.Add("columnName4", "headerText4");
+        // Configures the appearance and behavior of a DataGridView control.
+        private void InitializeDataGridView(DataGridView dataGridView)
+        {
+            // Initialize basic DataGridView properties.
+            dataGridView.Dock = DockStyle.Fill;
+            dataGridView.BackgroundColor = Color.LightGray;
+            dataGridView.BorderStyle = BorderStyle.None;
 
-            
+            // Set property values appropriate for read-only display and limited interactivity. 
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AllowUserToOrderColumns = true;
+            dataGridView.ReadOnly = true;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.MultiSelect = true; //TODO - change?
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None; //TODO - change?
+            dataGridView.AllowUserToResizeColumns = true;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+
+            // Set the selection background color for all the cells.
+            dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightCoral; //TODO - change?
+            dataGridView.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            // Set RowHeadersDefaultCellStyle.SelectionBackColor so that its default value won't override DataGridView.DefaultCellStyle.SelectionBackColor.
+            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.Empty;
+            dataGridView.RowHeadersVisible = false; //TODO - make it visible and smaller? Any purpose?
+
+            // Set the background color for all rows and for alternating rows. The value for alternating rows overrides the value for all rows. 
+            dataGridView.RowsDefaultCellStyle.BackColor = Color.White;
+            //dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray; //TODO - maybe enable if it is easier to read
+
+            // Set the row and column header styles.
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Black;
+            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.Black;
 
 
-
-            /*
-             * var item1 = new ListViewItem(new[] {"id123", "Tom", "24"});
-                var item2 = new ListViewItem(new[] {person.Id, person.Name, person.Age});
-                lvRegAnimals.Items.Add(item1);
-                lvRegAnimals.Items.Add(item2);
-             */
-
-
-
-            foreach (var entry in list)
+            // Specify a larger font for the "Ratings" column. 
+            using (Font font = new Font(dataGridView.DefaultCellStyle.Font.FontFamily, 25, FontStyle.Bold))
             {
-             //   Console.WriteLine(entry.ToString());
-             //   listView1.Items.Add(entry.ToString());
+                dataGridView.Columns["Rating"].DefaultCellStyle.Font = font;
             }
-            
 
-            
-
-            #endregion
+            // Attach a handler to the CellFormatting event.
+            dataGridView.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView_CellFormatting);
 
 
         }
 
 
-        private void InitializeResizingListView()
+        // Changes the foreground color of cells in the "Ratings" column 
+        // depending on the number of stars. 
+        private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.ColumnIndex == dataGridView2.Columns["Rating"].Index && e.Value != null)
+            {
+                switch (e.Value.ToString().Length)
+                {
+                    case 1:
+                        e.CellStyle.BackColor = Color.Red;
+                        e.CellStyle.SelectionBackColor = Color.LightGray;
 
-            // Set the ListView to details view.
-            listView1.View = View.Details;
-
-            //Set size, location and populate the ListView.
-            listView1.Size = new Size(200, 100);
-            listView1.Location = new Point(40, 40);
-            listView1.Columns.Add("HeaderSize");
-            listView1.Columns.Add("ColumnContent");
-            ListViewItem listItem1 = new ListViewItem("Short");
-            ListViewItem listItem2 = new ListViewItem("Tiny");
-            listItem1.SubItems.Add(new ListViewItem.ListViewSubItem(listItem1, "Something longer"));
-            listItem2.SubItems.Add(new ListViewItem.ListViewSubItem(listItem2, "Something even longer"));
-            listView1.Items.Add(listItem1);
-            listView1.Items.Add(listItem2);
-
-            listView1.GridLines = true;
-            listView1.AllowColumnReorder = true;
-            listView1.LabelEdit = true;
-            listView1.FullRowSelect = true;
-            listView1.Sorting = SortOrder.Ascending;
-            listView1.View = View.Details;
-
-
-
+                        e.CellStyle.SelectionForeColor = Color.Red;
+                        e.CellStyle.ForeColor = Color.Black;
+                        break;
+                    case 2:
+                        e.CellStyle.SelectionForeColor = Color.Yellow;
+                        e.CellStyle.ForeColor = Color.Yellow;
+                        break;
+                    case 3:
+                        e.CellStyle.SelectionForeColor = Color.Green;
+                        e.CellStyle.ForeColor = Color.Green;
+                        break;
+                    case 4:
+                        e.CellStyle.SelectionForeColor = Color.Blue;
+                        e.CellStyle.ForeColor = Color.Blue;
+                        break;
+                }
+            }
         }
 
-        private void InitializeDataGridView()
+
+        // Creates the columns and loads the data.
+        //TODO - Populate should not be done with a "handover parameter"
+        private void PopulateDataGridView(DataGridView dataGridView)
         {
+            // Set the column header names.
+            dataGridView.ColumnCount = 5;
+            dataGridView.Columns[0].Name = "Recipe";
+            dataGridView.Columns[1].Name = "Category";
+            dataGridView.Columns[2].Name = "Main Ingredients";
+            dataGridView.Columns[3].Name = "Last Prepared";
+            dataGridView.Columns[4].Name = "Rating";
 
-            dataGridView1.BackgroundColor = Color.BlueViolet;
-            dataGridView1.BackColor = Color.Aqua;
-            dataGridView1.AllowUserToAddRows = false;
+            // Populate the rows.
+            object[] row1 = new object[]{"Meatloaf", "Main Dish", "ground beef", new DateTime(2000, 3, 23), "*"};
+            object[] row2 = new object[]{"Key Lime Pie", "Dessert", "lime juice, evaporated milk", new DateTime(2002, 4, 12), "****"};
+            object[] row3 = new object[]{"Orange-Salsa Pork Chops", "Main Dish", "pork chops, salsa, orange juice", new DateTime(2000, 8, 9), "****"};
+            object[] row4 = new object[]{"Black Bean and Rice Salad", "Salad", "black beans, brown rice", new DateTime(1999, 5, 7), "****"};
+            object[] row5 = new object[]{"Chocolate Cheesecake", "Dessert", "cream cheese", new DateTime(2003, 3, 12), "***"};
+            object[] row6 = new object[]{"Black Bean Dip", "Appetizer", "black beans, sour cream", new DateTime(2003, 12, 23), "***"};
 
-            dataGridView1.GridColor = Color.Blue;
+            // Add the rows to the DataGridView.
+            object[] rows = new object[] { row1, row2, row3, row4, row5, row6 };
+            foreach (object[] rowArray in rows)
+            {
+                dataGridView.Rows.Add(rowArray);
+            }
 
-
-
-            //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridview?view=windowsdesktop-5.0
-
-
-
+            // Adjust the row heights so that all content is visible.
+            dataGridView.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders);
         }
-
-
-
     }
 }
