@@ -15,29 +15,20 @@ namespace SyncedLogCompare
         static void Main()
         {
 
-            // ----- TEST DEBUG -----
-            LogHandler logHandler = new LogHandler("C:\\Users\\Thomas\\localgit\\work\\logcompare\\data.test\\logfiles_debug\\");
+            // ---- DEBUG ----- 
 
-            List<LogEntry> list = new List<LogEntry>();
+            Console.WriteLine("test start " + DateTime.Now);
+            LogHandler logHandler = new LogHandler("C:\\Users\\Thomas\\localgit\\SyncedLogCompare\\test.data\\all\\");
 
-            list = logHandler.LoadLogFileEntries("messages.prn");
+          //  var list = logHandler.LoadLogFiles();
 
-            foreach (var entry in list)
-            {
-                Console.WriteLine(entry.ToString());
-            }
+           // foreach (var logEntry in list) { Console.WriteLine(logEntry.ToString()); }
 
-            List<LogEntry> list2 = new List<LogEntry>();
-            list2 = logHandler.LoadLogFileEntries("TBTracer.log");
-            foreach (var entry in list2)
-            {
-                Console.WriteLine(entry.ToString());
-            }
+         //   Console.WriteLine(list.Count);
 
-            // ----------------------
+            Console.WriteLine("test end " + DateTime.Now);
 
-
-
+            // ------ END DEBUG ------
 
 
 
@@ -45,6 +36,8 @@ namespace SyncedLogCompare
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
+
 
         }
     }
