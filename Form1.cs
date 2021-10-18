@@ -273,6 +273,9 @@ namespace SyncedLogCompare
         // --------------------------------------------
         //TODO - inital SEARCH tests
         //TODO - maybe a nicer cleaner solution with LINQ // https://stackoverflow.com/questions/10179223/find-a-row-in-datagridview-based-on-column-and-value
+        //TODO - adapt Search that on Message side only elements with from message log are highlited / shown 
+        //TODO - show how many elements match current "search String" and which counter value the current box has
+
         private int lastSearchIndex = -1; 
         private void button2_Click(object sender, EventArgs e)
         {
