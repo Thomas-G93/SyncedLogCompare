@@ -13,6 +13,10 @@ namespace SyncedLogCompare
 {
     public partial class Form1 : Form
     {
+
+        //TODO - good idea to declare this here???
+        private List<LogEntry> _list;
+
         public Form1()
         {
             InitializeComponent();
@@ -133,63 +137,6 @@ namespace SyncedLogCompare
         }
 
 
-        //TODO - works but only if the FileName Column is visible in the window....
-        private void dgv_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            // If the column is the Artist column, check the
-            // value.
-
-            Console.WriteLine("ColumnName: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name + 
-                              "\t||\t e.ColumnIndex: " + e.ColumnIndex + 
-                              "\t||\t e.RowIndex: " + e.RowIndex);
-
-
-
-
-            //var myvalue = dataGridViewMessage.Rows[e.RowIndex].Cells[6].Value.ToString();
-            //Console.WriteLine(myvalue);
-
-            //TODO - works!!!
-            //TODO - must be refactored to use the FILETYPE instead of FileName "Tracer.log" and a better why to find the column
-            if (dataGridViewMessage.Rows[e.RowIndex].Cells[dataGridViewMessage.Columns["FileName"].Index].Value.ToString().Equals("TBTracer.log"))
-            {
-                DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];
-                row.DefaultCellStyle.BackColor = Color.Black;
-            }
-
-
-
-            //TODO - works but only if the FileName Column is visible in the window....
-            if (this.dataGridViewMessage.Columns[e.ColumnIndex].Name == "FileName")
-            {
-     
-                if (e.Value != null)
-                {
-                    string stringValue = (string)e.Value;
-                    
-                    Console.WriteLine(stringValue);
-
-                    stringValue = stringValue.ToLower();
-
-                    if (stringValue.Equals("tbtracer.log"))
-                    {
-                        e.CellStyle.SelectionBackColor = Color.Green;
-                        e.CellStyle.BackColor = Color.Green;
-                        e.CellStyle.SelectionForeColor = Color.DarkGreen;
-                        e.CellStyle.ForeColor = Color.DarkGreen;
-
-                        DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];// get you required index
-                        row.DefaultCellStyle.BackColor = Color.Green; // check the cell value under your specific column and then you can toggle your colors
-
-                    }
-
-                }
-            }
-
-
-        }
-
-
 
         // Changes the foreground color of cells in the "Ratings" column 
         // depending on the number of stars. 
@@ -230,8 +177,74 @@ namespace SyncedLogCompare
 
 
 
+        //TODO - works but only if the FileName Column is visible in the window....
+        private void dgv_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // If the column is the Artist column, check the
+            // value.
+
+            Console.WriteLine("ColumnName: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name +
+                              "\t||\t e.ColumnIndex: " + e.ColumnIndex +
+                              "\t||\t e.RowIndex: " + e.RowIndex);
+
+
+            //var myvalue = dataGridViewMessage.Rows[e.RowIndex].Cells[6].Value.ToString();
+            //Console.WriteLine(myvalue);
+
+
+            //TODO - to not allow clicking in those cells!
+
+            //TODO - works!!!
+            //TODO - must be refactored to use the FILETYPE instead of FileName "Tracer.log" and a better why to find the column
+            if (dataGridViewMessage.Rows[e.RowIndex].Cells[dataGridViewMessage.Columns["FileName"].Index].Value.ToString().Equals("TBTracer.log"))
+            {
+                DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];
+                row.DefaultCellStyle.BackColor = Color.Black;
+
+                e.CellStyle.SelectionBackColor = Color.White;
+                e.CellStyle.BackColor = Color.White;
+                e.CellStyle.SelectionForeColor = Color.White;
+                e.CellStyle.ForeColor = Color.White;
+
+            }
+
+
+
+            //TODO - works but only if the FileName Column is visible in the window....
+            if (this.dataGridViewMessage.Columns[e.ColumnIndex].Name == "FileName")
+            {
+
+                if (e.Value != null)
+                {
+                    string stringValue = (string)e.Value;
+
+                    Console.WriteLine(stringValue);
+
+                    stringValue = stringValue.ToLower();
+
+                    if (stringValue.Equals("tbtracer.log"))
+                    {
+                        e.CellStyle.SelectionBackColor = Color.Green;
+                        e.CellStyle.BackColor = Color.Green;
+                        e.CellStyle.SelectionForeColor = Color.DarkGreen;
+                        e.CellStyle.ForeColor = Color.DarkGreen;
+
+                        DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];// get you required index
+                        row.DefaultCellStyle.BackColor = Color.Green; // check the cell value under your specific column and then you can toggle your colors
+
+                    }
+
+                }
+            }
+
+        }
+
+
+
         // Creates the columns and loads the data.
         //TODO - Populate should not be done with a "handover parameter" // rename
+        //TODO - maybe it should be done with handover paramter? if both sides are exactly the same???
+        //TODO - difference is then done through hiding / showing lines
         private void PopulateDataGridView(DataGridView dataGridView)
         {
 
@@ -240,13 +253,10 @@ namespace SyncedLogCompare
 
             LogHandler logHandler = new LogHandler(tbPathToLogFolder.Text);
 
+            //var list = logHandler.LoadLogFiles();
+            _list = logHandler.LoadLogFiles();
 
-            var list = logHandler.LoadLogFiles();
-
-
-
-
-            var bindingList = new BindingList<LogEntry>(list);
+            var bindingList = new BindingList<LogEntry>(_list);
             var source = new BindingSource(bindingList, null);
             dataGridView.DataSource = source;
 
@@ -254,5 +264,123 @@ namespace SyncedLogCompare
             // Adjust the row heights so that all content is visible.
             dataGridView.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders);
         }
+
+
+
+
+        // --------------------------------------------
+        //TODO - make SEARCH its own CLASS?!
+        // --------------------------------------------
+        //TODO - inital SEARCH tests
+        //TODO - maybe a nicer cleaner solution with LINQ // https://stackoverflow.com/questions/10179223/find-a-row-in-datagridview-based-on-column-and-value
+        private int lastSearchIndex = -1; 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(@"search string: " + tbSearch.Text);
+
+
+            //DataGridViewCell cell = GetCellWhereTextExistsInGridView(tbSearch.Text, dataGridViewMessage, 2);
+            DataGridViewCell cell = GetCellWhereTextExistsInGridView(tbSearch.Text, dataGridViewMessage, 2, lastSearchIndex);
+
+
+
+            if (cell != null)
+            {
+                var rowIndex = cell.RowIndex;
+
+                lastSearchIndex = cell.RowIndex;
+
+                dataGridViewMessage.ClearSelection();
+                dataGridViewMessage.Rows[rowIndex].Selected = true;
+                dataGridViewMessage.FirstDisplayedScrollingRowIndex = rowIndex;
+                dataGridViewMessage.Focus();
+            }
+
+
+
+        }
+
+        private DataGridViewCell GetCellWhereTextExistsInGridView(string searchText, DataGridView dataGridView, int columnIndex)
+        {
+            DataGridViewCell cellWhereTextIsMet = null;
+
+            // For every row in the grid (obviously)
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                
+                // I did not test this case, but cell.Value is an object, and objects can be null
+                // So check if the cell is null before using .ToString()
+                if (row.Cells[columnIndex].Value != null)
+                {
+                    if (row.Cells[columnIndex].Value.ToString().Contains(searchText))
+                    {
+                        // the searchText is equals to the text in this cell.
+                        cellWhereTextIsMet = row.Cells[columnIndex];
+                        break;
+                    }
+                }
+            }
+
+            return cellWhereTextIsMet;
+        }
+
+        private DataGridViewCell GetCellWhereTextExistsInGridView(string searchText, DataGridView dataGridView, int columnIndex, int lastSearchIndex)
+        {
+            DataGridViewCell cellWhereTextIsMet = null;
+
+            if (lastSearchIndex == -1)
+            {
+                // For every row in the grid (obviously)
+                foreach (DataGridViewRow row in dataGridView.Rows)
+                {
+                    // I did not test this case, but cell.Value is an object, and objects can be null
+                    // So check if the cell is null before using .ToString()
+                    if (row.Cells[columnIndex].Value != null)
+                    {
+                        if (row.Cells[columnIndex].Value.ToString().Contains(searchText))
+                        {
+                            // the searchText is equals to the text in this cell.
+                            cellWhereTextIsMet = row.Cells[columnIndex];
+                            break;
+                        }
+                    }
+                }
+
+
+               
+
+            }
+            else
+            {
+                // TODO - Ignore CASE sensitivity 
+                // TODO - allow WILDCARD search
+                // TODO - restart search from top when bottom is reached
+
+                Console.WriteLine("lastSearchIndex: " + lastSearchIndex);
+                lastSearchIndex++;
+                for (var index = lastSearchIndex; index < dataGridView.Rows.Count; index++)
+                {
+                    DataGridViewRow row = dataGridView.Rows[index];
+
+                    if (row.Cells[columnIndex].Value != null)
+                    {
+                        if (row.Cells[columnIndex].Value.ToString().Contains(searchText))
+                        {
+                            // the searchText is equals to the text in this cell.
+                            cellWhereTextIsMet = row.Cells[columnIndex];
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            return cellWhereTextIsMet;
+
+        }
+
+
+
+
     }
 }
