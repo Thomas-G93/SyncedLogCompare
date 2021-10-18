@@ -15,7 +15,7 @@ namespace SyncedLogCompare
     {
 
         //TODO - good idea to declare this here???
-        private List<LogEntry> _list;
+        //private List<LogEntry> _list;
 
         public Form1()
         {
@@ -30,11 +30,7 @@ namespace SyncedLogCompare
             PopulateDataGridView(dataGridViewTracer);
 
 
-
-
             AdjustColumnsToDisplay();
-
-
 
             InitializeDataGridView(dataGridViewMessage);
             InitializeDataGridView(dataGridViewTracer);
@@ -220,7 +216,7 @@ namespace SyncedLogCompare
             //Console.WriteLine(myvalue);
 
 
-            //TODO - to not allow clicking in those cells!
+            //TODO - to not allow clicking in those cells!???
 
             //TODO - works!!!
             //TODO - must be refactored to use the FILETYPE instead of FileName "Tracer.log" and a better why to find the column
@@ -281,10 +277,10 @@ namespace SyncedLogCompare
 
             LogHandler logHandler = new LogHandler(tbPathToLogFolder.Text);
 
-            //var list = logHandler.LoadLogFiles();
-            _list = logHandler.LoadLogFiles();
+            var list = logHandler.LoadLogFiles();
+            //_list = logHandler.LoadLogFiles();
 
-            var bindingList = new BindingList<LogEntry>(_list);
+            var bindingList = new BindingList<LogEntry>(list);
             var source = new BindingSource(bindingList, null);
             dataGridView.DataSource = source;
 
