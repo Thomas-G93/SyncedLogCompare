@@ -27,7 +27,7 @@ namespace SyncedLogCompare
 
 
             //Hide columns
-         //   this.dataGridViewMessage.Columns["FileName"].Visible = false;
+            this.dataGridViewMessage.Columns["FileName"].Visible = false;
          //   this.dataGridViewMessage.Columns["Device"].Visible = false;
          //   this.dataGridViewMessage.Columns["Component"].Visible = false;
 
@@ -42,7 +42,7 @@ namespace SyncedLogCompare
             InitializeDataGridView(dataGridViewTracer);
 
 
-            //TODO - not working.... 
+            //TODO - cleanup
             dataGridViewMessage.CellFormatting += new DataGridViewCellFormattingEventHandler(dgv_CellFormatting);
 
 
@@ -139,9 +139,27 @@ namespace SyncedLogCompare
             // If the column is the Artist column, check the
             // value.
 
-            Console.WriteLine("TEST: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name);
+            Console.WriteLine("ColumnName: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name + 
+                              "\t||\t e.ColumnIndex: " + e.ColumnIndex + 
+                              "\t||\t e.RowIndex: " + e.RowIndex);
 
 
+
+
+            //var myvalue = dataGridViewMessage.Rows[e.RowIndex].Cells[6].Value.ToString();
+            //Console.WriteLine(myvalue);
+
+            //TODO - works!!!
+            //TODO - must be refactored to use the FILETYPE instead of FileName "Tracer.log" and a better why to find the column
+            if (dataGridViewMessage.Rows[e.RowIndex].Cells[dataGridViewMessage.Columns["FileName"].Index].Value.ToString().Equals("TBTracer.log"))
+            {
+                DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];
+                row.DefaultCellStyle.BackColor = Color.Black;
+            }
+
+
+
+            //TODO - works but only if the FileName Column is visible in the window....
             if (this.dataGridViewMessage.Columns[e.ColumnIndex].Name == "FileName")
             {
      
@@ -159,10 +177,16 @@ namespace SyncedLogCompare
                         e.CellStyle.BackColor = Color.Green;
                         e.CellStyle.SelectionForeColor = Color.DarkGreen;
                         e.CellStyle.ForeColor = Color.DarkGreen;
+
+                        DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];// get you required index
+                        row.DefaultCellStyle.BackColor = Color.Green; // check the cell value under your specific column and then you can toggle your colors
+
                     }
 
                 }
             }
+
+
         }
 
 

@@ -39,12 +39,12 @@ namespace SyncedLogCompare
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -57,7 +57,7 @@ namespace SyncedLogCompare
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(63, 856);
+            this.button1.Location = new System.Drawing.Point(3, 893);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(348, 77);
@@ -83,7 +83,7 @@ namespace SyncedLogCompare
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridViewTracer);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(0, 0, 20, 0);
-            this.splitContainer1.Size = new System.Drawing.Size(2235, 744);
+            this.splitContainer1.Size = new System.Drawing.Size(2235, 781);
             this.splitContainer1.SplitterDistance = 1117;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 3;
@@ -97,7 +97,7 @@ namespace SyncedLogCompare
             this.dataGridViewMessage.Name = "dataGridViewMessage";
             this.dataGridViewMessage.RowHeadersWidth = 102;
             this.dataGridViewMessage.RowTemplate.Height = 40;
-            this.dataGridViewMessage.Size = new System.Drawing.Size(1097, 744);
+            this.dataGridViewMessage.Size = new System.Drawing.Size(1097, 781);
             this.dataGridViewMessage.TabIndex = 0;
             // 
             // dataGridViewTracer
@@ -109,7 +109,7 @@ namespace SyncedLogCompare
             this.dataGridViewTracer.Name = "dataGridViewTracer";
             this.dataGridViewTracer.RowHeadersWidth = 102;
             this.dataGridViewTracer.RowTemplate.Height = 40;
-            this.dataGridViewTracer.Size = new System.Drawing.Size(1093, 744);
+            this.dataGridViewTracer.Size = new System.Drawing.Size(1093, 781);
             this.dataGridViewTracer.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -170,12 +170,22 @@ namespace SyncedLogCompare
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1173, 857);
+            this.button2.Location = new System.Drawing.Point(1125, 894);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(354, 76);
             this.button2.TabIndex = 4;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(1125, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(192, 36);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.Text = "checkBox1";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
@@ -215,16 +225,6 @@ namespace SyncedLogCompare
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(1279, 5);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(192, 36);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
