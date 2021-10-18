@@ -30,27 +30,51 @@ namespace SyncedLogCompare
             PopulateDataGridView(dataGridViewTracer);
 
 
-            //Hide columns
-            this.dataGridViewMessage.Columns["FileName"].Visible = false;
-         //   this.dataGridViewMessage.Columns["Device"].Visible = false;
-         //   this.dataGridViewMessage.Columns["Component"].Visible = false;
-
-         //   this.dataGridViewTracer.Columns["FileName"].Visible = false;
-         //   this.dataGridViewTracer.Columns["From"].Visible = false;
 
 
+            AdjustColumnsToDisplay();
 
 
 
             InitializeDataGridView(dataGridViewMessage);
             InitializeDataGridView(dataGridViewTracer);
 
+            
 
             //TODO - cleanup
             dataGridViewMessage.CellFormatting += new DataGridViewCellFormattingEventHandler(dgv_CellFormatting);
 
 
         }
+
+        private void AdjustColumnsToDisplay()
+        {
+
+            //Hide columns
+            this.dataGridViewMessage.Columns["FileName"].Visible = false;
+            this.dataGridViewMessage.Columns["Device"].Visible = false;
+            this.dataGridViewMessage.Columns["Component"].Visible = false;
+
+            this.dataGridViewTracer.Columns["FileName"].Visible = false;
+            this.dataGridViewTracer.Columns["From"].Visible = false;
+
+
+            this.dataGridViewMessage.Columns["Severity"].DisplayIndex = 0;
+            this.dataGridViewMessage.Columns["DateTime"].DisplayIndex = 1;
+            this.dataGridViewMessage.Columns["From"].DisplayIndex = 2;
+            this.dataGridViewMessage.Columns["Message"].DisplayIndex = 3;
+
+            
+
+
+            this.dataGridViewTracer.Columns["Severity"].DisplayIndex = 0;
+            this.dataGridViewTracer.Columns["DateTime"].DisplayIndex = 1;
+            this.dataGridViewTracer.Columns["Component"].DisplayIndex = 2;
+            this.dataGridViewTracer.Columns["Device"].DisplayIndex = 3;
+            this.dataGridViewTracer.Columns["Message"].DisplayIndex = 4;
+
+        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -98,7 +122,10 @@ namespace SyncedLogCompare
             dataGridView.ReadOnly = true;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = true;                                            //TODO - change?
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;          //TODO - change?
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;          //TODO - change? //ori was NONE
+
+            //dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; //if set user Resize does not work anymre
+
             dataGridView.AllowUserToResizeColumns = true;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.AllowUserToResizeRows = false;
@@ -183,10 +210,11 @@ namespace SyncedLogCompare
             // If the column is the Artist column, check the
             // value.
 
+            /* //DEBUG
             Console.WriteLine("ColumnName: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name +
                               "\t||\t e.ColumnIndex: " + e.ColumnIndex +
                               "\t||\t e.RowIndex: " + e.RowIndex);
-
+            */
 
             //var myvalue = dataGridViewMessage.Rows[e.RowIndex].Cells[6].Value.ToString();
             //Console.WriteLine(myvalue);
@@ -269,7 +297,7 @@ namespace SyncedLogCompare
 
 
         // --------------------------------------------
-        //TODO - make SEARCH its own CLASS?!
+        //TODO - make SEARCH its own CLASS!!!
         // --------------------------------------------
         //TODO - inital SEARCH tests
         //TODO - maybe a nicer cleaner solution with LINQ // https://stackoverflow.com/questions/10179223/find-a-row-in-datagridview-based-on-column-and-value
