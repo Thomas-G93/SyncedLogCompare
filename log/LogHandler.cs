@@ -72,7 +72,7 @@ namespace SyncedLogCompare
                 String from = strings[2].Trim();
                 String message = strings[3].Trim();
 
-                list.Add(new LogEntry(severity, dateTime, from, message, logFile.FileName));
+                list.Add(new LogEntry(severity, dateTime, from, message, logFile.FileName, logFile.FileType.ToString()));
             }
             else //TBTRACER //TODO - what if we have more types?
             {
@@ -82,7 +82,7 @@ namespace SyncedLogCompare
                 String device = strings[3].Trim();
                 String message = strings[4].Trim();
 
-                list.Add(new LogEntry(severity, dateTime, component, device, message, logFile.FileName));
+                list.Add(new LogEntry(severity, dateTime, component, device, message, logFile.FileName, logFile.FileType.ToString()));
             }
 
             return list;

@@ -13,7 +13,7 @@ namespace SyncedLogCompare
 
         //TODO - split again in two different classes? TBTRACER and MESSAGE
 
-        public LogEntry(string severity, string dateTime, string component, string device, string message, string fileName)
+        public LogEntry(string severity, string dateTime, string component, string device, string message, string fileName, string fileType)
         {
             //TBTRACER
             Severity = severity;
@@ -22,10 +22,10 @@ namespace SyncedLogCompare
             Device = device;
             Message = message;
             FileName = fileName;
-
+            FileType = fileType;
         }
 
-        public LogEntry(string severity, string dateTime, string from, string message, string fileName)
+        public LogEntry(string severity, string dateTime, string from, string message, string fileName, string fileType)
         {
             //MESSAGE
             Severity = severity;
@@ -33,13 +33,15 @@ namespace SyncedLogCompare
             From = from;
             Message = message;
             FileName = fileName;
-
+            FileType = fileType;
         }
 
         public override string ToString()
         {
             return $"{nameof(Severity)}: {Severity}, {nameof(DateTime)}: {DateTime}, {nameof(Message)}: {Message}, {nameof(From)}: {From}, {nameof(Component)}: {Component}, {nameof(Device)}: {Device}";
         }
+
+        public string FileType { get; }
 
         public string Severity { get; }
 

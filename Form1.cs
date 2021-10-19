@@ -14,8 +14,6 @@ namespace SyncedLogCompare
     public partial class Form1 : Form
     {
 
-        //TODO - good idea to declare this here???
-        //private List<LogEntry> _list;
 
         public Form1()
         {
@@ -30,29 +28,33 @@ namespace SyncedLogCompare
             PopulateDataGridView(dataGridViewTracer);
 
 
-            AdjustColumnsToDisplay();
+            HideNotNeededColumnsToDisplay();
 
             InitializeDataGridView(dataGridViewMessage);
             InitializeDataGridView(dataGridViewTracer);
 
             
 
-            //TODO - cleanup
-            dataGridViewMessage.CellFormatting += new DataGridViewCellFormattingEventHandler(dgv_CellFormatting);
+
+            dataGridViewMessage.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewMessage, FileType.TBTracer));
+            //TODO - if to decide which filetype gets hidden -> Messages or MessagesBase
+            dataGridViewTracer.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewTracer, FileType.Messages));
 
 
         }
 
-        private void AdjustColumnsToDisplay()
+        private void HideNotNeededColumnsToDisplay()
         {
 
             //Hide columns
             this.dataGridViewMessage.Columns["FileName"].Visible = false;
             this.dataGridViewMessage.Columns["Device"].Visible = false;
             this.dataGridViewMessage.Columns["Component"].Visible = false;
+            this.dataGridViewMessage.Columns["FileType"].Visible = false;
 
             this.dataGridViewTracer.Columns["FileName"].Visible = false;
             this.dataGridViewTracer.Columns["From"].Visible = false;
+            this.dataGridViewTracer.Columns["FileType"].Visible = false;
 
 
             this.dataGridViewMessage.Columns["Severity"].DisplayIndex = 0;
@@ -83,15 +85,27 @@ namespace SyncedLogCompare
 
         }
 
-        // Binding Scrollbar
+        /// <summary>
+        /// bind scrollbar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void dataGridViewTracer_Scroll(object sender, ScrollEventArgs e)
         {
             this.dataGridViewMessage.FirstDisplayedScrollingRowIndex = this.dataGridViewTracer.FirstDisplayedScrollingRowIndex;
         }
+
+        /// <summary>
+        /// bind scrollbar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void dataGridViewMessage_Scroll(object sender, ScrollEventArgs e)
         {
             this.dataGridViewTracer.FirstDisplayedScrollingRowIndex = this.dataGridViewMessage.FirstDisplayedScrollingRowIndex;
         }
+
+
 
 
         private void InitializeTableLayoutPanel()
@@ -118,11 +132,24 @@ namespace SyncedLogCompare
             dataGridView.ReadOnly = true;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = true;                                            //TODO - change?
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;          //TODO - change? //ori was NONE
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;          //TODO - change? //ori was NONE
 
-            //dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; //if set user Resize does not work anymre
+          //  dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader; //if set user Resize does not work anymre
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; //if set user Resize does not work anymre
+
+
+
+            dataGridView.Columns["Severity"].HeaderText = string.Empty;
+
+            dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index);
+            dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index);
+
+            
 
             dataGridView.AllowUserToResizeColumns = true;
+            
+            
+            
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.AllowUserToResizeRows = false;
             dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -133,7 +160,7 @@ namespace SyncedLogCompare
 
             // Set RowHeadersDefaultCellStyle.SelectionBackColor so that its default value won't override DataGridView.DefaultCellStyle.SelectionBackColor.
             dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.Empty;
-            dataGridView.RowHeadersVisible = false; //TODO - make it visible and smaller? Any purpose?
+            dataGridView.RowHeadersVisible = false;
 
             // Set the background color for all rows and for alternating rows. The value for alternating rows overrides the value for all rows. 
             dataGridView.RowsDefaultCellStyle.BackColor = Color.White;
@@ -145,25 +172,34 @@ namespace SyncedLogCompare
             dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.Black;
 
 
+            #region optional larger font for severity
+
+            /*
             // Specify a larger font for the "Severity" column. 
-            using (Font font = new Font(dataGridView.DefaultCellStyle.Font.FontFamily, 12, FontStyle.Bold))
+            using (Font font = new Font(dataGridView.DefaultCellStyle.Font.FontFamily, 10, FontStyle.Bold))
             {
                 dataGridView.Columns["Severity"].DefaultCellStyle.Font = font;
             }
+            */
 
+            #endregion
+
+
+
+            //TODO - move CellFormatting handler out of Initialization
             // Attach a handler to the CellFormatting event.
-            dataGridView.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView_CellFormatting);
-
-
-            
+            dataGridView.CellFormatting += new DataGridViewCellFormattingEventHandler(dgvColorSeverity_CellFormatting);
 
         }
 
 
 
-        // Changes the foreground color of cells in the "Ratings" column 
-        // depending on the number of stars. 
-        private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        /// <summary>
+        /// change cell foreground from "Severity" column, based on cell value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvColorSeverity_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex == dataGridViewTracer.Columns["Severity"].Index && e.Value != null)
             {
@@ -198,95 +234,53 @@ namespace SyncedLogCompare
             }
         }
 
-
-
-        //TODO - works but only if the FileName Column is visible in the window....
-        private void dgv_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        /// <summary>
+        /// hide row of DataGridView by changing all colors to white, based on FileType
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="dataGridView"></param>
+        /// <param name="fileType"></param>
+        private void dgvHideFileType_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e, DataGridView dataGridView, FileType fileType)
         {
-            // If the column is the Artist column, check the
-            // value.
-
+            #region DEBUG_SECTION
             /* //DEBUG
             Console.WriteLine("ColumnName: " + this.dataGridViewMessage.Columns[e.ColumnIndex].Name +
                               "\t||\t e.ColumnIndex: " + e.ColumnIndex +
                               "\t||\t e.RowIndex: " + e.RowIndex);
             */
+            #endregion
 
-            //var myvalue = dataGridViewMessage.Rows[e.RowIndex].Cells[6].Value.ToString();
-            //Console.WriteLine(myvalue);
-
-
-            //TODO - to not allow clicking in those cells!???
-
-            //TODO - works!!!
-            //TODO - must be refactored to use the FILETYPE instead of FileName "Tracer.log" and a better why to find the column
-            if (dataGridViewMessage.Rows[e.RowIndex].Cells[dataGridViewMessage.Columns["FileName"].Index].Value.ToString().Equals("TBTracer.log"))
+            if (dataGridView.Rows[e.RowIndex].Cells[dataGridView.Columns["FileType"].Index].Value.ToString().Equals(fileType.ToString()))
             {
-                DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];
+                DataGridViewRow row = dataGridView.Rows[e.RowIndex];
                 row.DefaultCellStyle.BackColor = Color.Black;
 
                 e.CellStyle.SelectionBackColor = Color.White;
                 e.CellStyle.BackColor = Color.White;
                 e.CellStyle.SelectionForeColor = Color.White;
                 e.CellStyle.ForeColor = Color.White;
-
-            }
-
-
-
-            //TODO - works but only if the FileName Column is visible in the window....
-            if (this.dataGridViewMessage.Columns[e.ColumnIndex].Name == "FileName")
-            {
-
-                if (e.Value != null)
-                {
-                    string stringValue = (string)e.Value;
-
-                    Console.WriteLine(stringValue);
-
-                    stringValue = stringValue.ToLower();
-
-                    if (stringValue.Equals("tbtracer.log"))
-                    {
-                        e.CellStyle.SelectionBackColor = Color.Green;
-                        e.CellStyle.BackColor = Color.Green;
-                        e.CellStyle.SelectionForeColor = Color.DarkGreen;
-                        e.CellStyle.ForeColor = Color.DarkGreen;
-
-                        DataGridViewRow row = dataGridViewMessage.Rows[e.RowIndex];// get you required index
-                        row.DefaultCellStyle.BackColor = Color.Green; // check the cell value under your specific column and then you can toggle your colors
-
-                    }
-
-                }
             }
 
         }
 
 
-
-        // Creates the columns and loads the data.
-        //TODO - Populate should not be done with a "handover parameter" // rename
-        //TODO - maybe it should be done with handover paramter? if both sides are exactly the same???
-        //TODO - difference is then done through hiding / showing lines
+        // TODO - access "tbPathToLogFolder" in another way and move this out???
+        /// <summary>
+        /// populate DataGridView with LogEntries, based on path from TextBox
+        /// </summary>
+        /// <param name="dataGridView"></param>
         private void PopulateDataGridView(DataGridView dataGridView)
         {
-
-            // Add the rows to the DataGridView.
-            Console.WriteLine(tbPathToLogFolder.Text);
+            Console.WriteLine(@"tbPathToLogFolder: " + tbPathToLogFolder.Text);
 
             LogHandler logHandler = new LogHandler(tbPathToLogFolder.Text);
-
             var list = logHandler.LoadLogFiles();
-            //_list = logHandler.LoadLogFiles();
 
             var bindingList = new BindingList<LogEntry>(list);
             var source = new BindingSource(bindingList, null);
             dataGridView.DataSource = source;
 
-
-            // Adjust the row heights so that all content is visible.
-            dataGridView.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders);
         }
 
 
@@ -307,7 +301,9 @@ namespace SyncedLogCompare
 
 
             //DataGridViewCell cell = GetCellWhereTextExistsInGridView(tbSearch.Text, dataGridViewMessage, 2);
-            DataGridViewCell cell = GetCellWhereTextExistsInGridView(tbSearch.Text, dataGridViewMessage, 2, lastSearchIndex);
+
+            //TODO - should search in all columns not ONLY in MESSAGE
+            DataGridViewCell cell = GetCellWhereTextExistsInGridView(tbSearch.Text, dataGridViewMessage, dataGridViewMessage.Columns["Message"].Index, lastSearchIndex);
 
 
 
@@ -364,6 +360,7 @@ namespace SyncedLogCompare
                     // So check if the cell is null before using .ToString()
                     if (row.Cells[columnIndex].Value != null)
                     {
+                        Console.WriteLine(row.Cells[columnIndex].Value.ToString());
                         if (row.Cells[columnIndex].Value.ToString().Contains(searchText))
                         {
                             // the searchText is equals to the text in this cell.
@@ -382,6 +379,7 @@ namespace SyncedLogCompare
                 // TODO - Ignore CASE sensitivity 
                 // TODO - allow WILDCARD search
                 // TODO - restart search from top when bottom is reached
+                // TODO - what if no element matches 
 
                 Console.WriteLine("lastSearchIndex: " + lastSearchIndex);
                 lastSearchIndex++;
