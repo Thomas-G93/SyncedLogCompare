@@ -119,7 +119,6 @@ namespace SyncedLogCompare
         // Configures the appearance and behavior of a DataGridView control.
         private void InitializeDataGridView(DataGridView dataGridView)
         {
-
             // Initialize basic DataGridView properties.
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.BackgroundColor = Color.LightGray;
@@ -130,29 +129,22 @@ namespace SyncedLogCompare
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.ReadOnly = true;
+
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = true;                                            //TODO - change?
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;          //TODO - change? //ori was NONE
-
-          //  dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader; //if set user Resize does not work anymre
-            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; //if set user Resize does not work anymre
 
 
-
+            // Set Sizing for Rows and Columns
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dataGridView.Columns["Severity"].HeaderText = string.Empty;
-
             dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index);
             dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index);
-
-            
-
             dataGridView.AllowUserToResizeColumns = true;
-            
-            
-            
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.AllowUserToResizeRows = false;
             dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+
 
             // Set the selection background color for all the cells.
             dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightGray;        //TODO - change?
@@ -186,7 +178,7 @@ namespace SyncedLogCompare
 
 
 
-            //TODO - move CellFormatting handler out of Initialization
+            //TODO - move CellFormatting handler out of Initialization ??
             // Attach a handler to the CellFormatting event.
             dataGridView.CellFormatting += new DataGridViewCellFormattingEventHandler(dgvColorSeverity_CellFormatting);
 
@@ -251,6 +243,7 @@ namespace SyncedLogCompare
             */
             #endregion
 
+            //TODO - possible to disable selection here?
             if (dataGridView.Rows[e.RowIndex].Cells[dataGridView.Columns["FileType"].Index].Value.ToString().Equals(fileType.ToString()))
             {
                 DataGridViewRow row = dataGridView.Rows[e.RowIndex];
@@ -377,7 +370,7 @@ namespace SyncedLogCompare
             else
             {
                 // TODO - Ignore CASE sensitivity 
-                // TODO - allow WILDCARD search
+                // TODO - allow WILDCARD search -> REGEX
                 // TODO - restart search from top when bottom is reached
                 // TODO - what if no element matches 
 

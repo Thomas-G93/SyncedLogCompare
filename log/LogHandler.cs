@@ -28,6 +28,7 @@ namespace SyncedLogCompare
                 var bufferLine = new StringBuilder();
                 string line;
 
+                //TODO - maybe loop and check until first entry has been found with the "Beginning..." method
                 sr.ReadLine(); // skip first line -> header -> useless information
                 sr.ReadLine(); // skip second line -> empty
 
