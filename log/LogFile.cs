@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SyncedLogCompare
+namespace SyncedLogCompare.log
 {
     class LogFile
     {

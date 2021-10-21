@@ -1,4 +1,4 @@
-﻿namespace SyncedLogCompare
+﻿namespace SyncedLogCompare.log
 {
     public enum FileType
     {

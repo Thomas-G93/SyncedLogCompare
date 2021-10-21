@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SyncedLogCompare.log
 {
-    class DateTimeComparerAsc : IComparer<LogEntry>
+    internal class DateTimeComparerAsc : IComparer<LogEntry>
     {
         public int Compare(LogEntry x, LogEntry y)
         {
