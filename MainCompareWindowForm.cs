@@ -11,11 +11,11 @@ using SyncedLogCompare.log;
 
 namespace SyncedLogCompare
 {
-    public partial class Form1 : Form
+    public partial class MainCompareWindowForm : Form
     {
 
 
-        public Form1()
+        public MainCompareWindowForm()
         {
             InitializeComponent();
         }
@@ -74,7 +74,7 @@ namespace SyncedLogCompare
         }
 
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainCompareWindowForm_Load(object sender, EventArgs e)
         {
 
             InitializeTableLayoutPanel();

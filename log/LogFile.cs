@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SyncedLogCompare
 {
@@ -35,18 +31,18 @@ namespace SyncedLogCompare
             {
                 return FileType.TBTracer;
             }
-            else if (fileName.ToLower().StartsWith("messages_base"))
+
+            if (fileName.ToLower().StartsWith("messages_base"))
             {
                 return FileType.MessagesBASE;
             }
-            else if (fileName.ToLower().StartsWith("messages"))
+
+            if (fileName.ToLower().StartsWith("messages"))
             {
                 return FileType.Messages;
             }
-            else
-            {
-                return FileType.Unidentified;
-            }
+
+            return FileType.Unidentified;
         }
 
         private int SetLogParts(FileType fileType)
@@ -55,15 +51,14 @@ namespace SyncedLogCompare
             {
                 return 5;
             }
-            else if (fileType == FileType.Messages || fileType == FileType.MessagesBASE)
+
+            if (fileType == FileType.Messages || fileType == FileType.MessagesBASE)
             {
                 return 4;
             }
-            else
-            {
-                //TODO - Write new FILE Exception // and throw here instead of returning 1
-                return 1;
-            }
+
+            //TODO - Write new FILE Exception // and throw here instead of returning 1
+            return 1;
 
         }
 

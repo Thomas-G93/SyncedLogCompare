@@ -12,8 +12,9 @@ namespace SyncedLogCompare
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            //TODO - added string[] args -> "handover" to MainCompareWindowForm -> Constructor???
 
             // ---- DEBUG ----- 
 
@@ -35,7 +36,7 @@ namespace SyncedLogCompare
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainCompareWindowForm());
 
 
 
