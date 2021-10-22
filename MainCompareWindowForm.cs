@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Equin.ApplicationFramework;
 using SyncedLogCompare.log;
 
 namespace SyncedLogCompare
@@ -106,15 +108,27 @@ namespace SyncedLogCompare
         }
 
 
-
-
         private void InitializeTableLayoutPanel()
         {
-            this.tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+
+            tableLayoutPanel2.Dock = DockStyle.Fill;
 
             //TODO - Initialize more?
 
         }
+
+
+        //TODO - add for second dgv and rename textboxes
+        private void dataGridViewMessage_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            textBox1.Width = dataGridViewMessage.Columns[dataGridViewMessage.Columns["Severity"].Index].Width;
+            textBox2.Width = dataGridViewMessage.Columns[dataGridViewMessage.Columns["DateTime"].Index].Width;
+            textBox3.Width = dataGridViewMessage.Columns[dataGridViewMessage.Columns["From"].Index].Width;
+            textBox4.Width = dataGridViewMessage.Columns[dataGridViewMessage.Columns["Message"].Index].Width;
+
+        }
+
 
         // Configures the appearance and behavior of a DataGridView control.
         private void InitializeDataGridView(DataGridView dataGridView)
@@ -127,7 +141,8 @@ namespace SyncedLogCompare
             // Set property values appropriate for read-only display and limited interactivity. 
             dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToDeleteRows = false;
-            dataGridView.AllowUserToOrderColumns = true;
+
+            dataGridView.AllowUserToOrderColumns = false; //TODO - change? 
             dataGridView.ReadOnly = true;
 
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -138,8 +153,8 @@ namespace SyncedLogCompare
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dataGridView.Columns["Severity"].HeaderText = string.Empty;
-            dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index);
-            dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index);
+            dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index); // AutoSize to minimum of Severity text
+            dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index); // AutoSize Message field
             dataGridView.AllowUserToResizeColumns = true;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.AllowUserToResizeRows = false;
@@ -265,17 +280,32 @@ namespace SyncedLogCompare
         /// <param name="dataGridView"></param>
         private void PopulateDataGridView(DataGridView dataGridView)
         {
+
             Console.WriteLine(@"tbPathToLogFolder: " + tbPathToLogFolder.Text);
 
+            
             LogHandler logHandler = new LogHandler(tbPathToLogFolder.Text);
             var list = logHandler.LoadLogFiles();
 
             var bindingList = new BindingList<LogEntry>(list);
             var source = new BindingSource(bindingList, null);
-            dataGridView.DataSource = source;
 
+            //dataGridView.DataSource = source;
+
+            BindingListView<LogEntry> view = new BindingListView<LogEntry>(list); // ############################## check if really the way to go !!!!!!!!! 
+            dataGridView.DataSource = view;
+
+
+            Console.WriteLine(view.Count);
         }
 
+
+        // --------------------------------------------
+        //TODO - FILTER
+        // --------------------------------------------
+        private void button3_Click(object sender, EventArgs e)
+        {
+        }
 
 
 
@@ -398,6 +428,12 @@ namespace SyncedLogCompare
         }
 
 
+
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
 
 
     }

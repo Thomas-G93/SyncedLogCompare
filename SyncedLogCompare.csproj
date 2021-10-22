@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView">
+      <HintPath>.\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +66,7 @@
   <ItemGroup>
     <Compile Include="log\DateTimeComparerAsc.cs" />
     <Compile Include="log\FileType.cs" />
+    <Compile Include="log\LogEntries.cs" />
     <Compile Include="log\LogEntry.cs" />
     <Compile Include="MainCompareWindowForm.cs">
       <SubType>Form</SubType>

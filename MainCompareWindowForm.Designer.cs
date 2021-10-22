@@ -36,16 +36,20 @@ namespace SyncedLogCompare
             this.dataGridViewTracer = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tbPathToLogFolder = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tbSearch = new System.Windows.Forms.TextBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -53,13 +57,13 @@ namespace SyncedLogCompare
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMessage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTracer)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 882);
+            this.button1.Location = new System.Drawing.Point(3, 995);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(348, 77);
@@ -72,7 +76,7 @@ namespace SyncedLogCompare
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.splitContainer1, 2);
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(5, 105);
+            this.splitContainer1.Location = new System.Drawing.Point(5, 153);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(5);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -85,7 +89,7 @@ namespace SyncedLogCompare
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridViewTracer);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(0, 0, 20, 0);
-            this.splitContainer1.Size = new System.Drawing.Size(2338, 770);
+            this.splitContainer1.Size = new System.Drawing.Size(2338, 835);
             this.splitContainer1.SplitterDistance = 1168;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 3;
@@ -99,8 +103,9 @@ namespace SyncedLogCompare
             this.dataGridViewMessage.Name = "dataGridViewMessage";
             this.dataGridViewMessage.RowHeadersWidth = 102;
             this.dataGridViewMessage.RowTemplate.Height = 40;
-            this.dataGridViewMessage.Size = new System.Drawing.Size(1148, 770);
+            this.dataGridViewMessage.Size = new System.Drawing.Size(1148, 835);
             this.dataGridViewMessage.TabIndex = 0;
+            this.dataGridViewMessage.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridViewMessage_ColumnWidthChanged);
             // 
             // dataGridViewTracer
             // 
@@ -111,7 +116,7 @@ namespace SyncedLogCompare
             this.dataGridViewTracer.Name = "dataGridViewTracer";
             this.dataGridViewTracer.RowHeadersWidth = 102;
             this.dataGridViewTracer.RowTemplate.Height = 40;
-            this.dataGridViewTracer.Size = new System.Drawing.Size(1145, 770);
+            this.dataGridViewTracer.Size = new System.Drawing.Size(1145, 835);
             this.dataGridViewTracer.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -119,26 +124,29 @@ namespace SyncedLogCompare
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.tbPathToLogFolder, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.button2, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.button2, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.checkBox1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.tbSearch, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.statusStrip1, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.button3, 1, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 49);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(20);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 6;
+            this.tableLayoutPanel1.RowCount = 8;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(2348, 1162);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(2348, 1225);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // tbPathToLogFolder
@@ -150,20 +158,9 @@ namespace SyncedLogCompare
             this.tbPathToLogFolder.TabIndex = 5;
             this.tbPathToLogFolder.Text = "C:\\Users\\Thomas\\localgit\\SyncedLogCompare\\test.data\\reduced\\";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 53);
-            this.label1.Margin = new System.Windows.Forms.Padding(5);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(5);
-            this.label1.Size = new System.Drawing.Size(163, 42);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "test label 1";
-            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1177, 883);
+            this.button2.Location = new System.Drawing.Point(1177, 996);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(354, 76);
             this.button2.TabIndex = 4;
@@ -188,27 +185,74 @@ namespace SyncedLogCompare
             this.tbSearch.Size = new System.Drawing.Size(1000, 38);
             this.tbSearch.TabIndex = 9;
             // 
-            // statusStrip1
+            // label1
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.statusStrip1, 2);
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1108);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(2348, 54);
-            this.statusStrip1.TabIndex = 10;
-            this.statusStrip1.Text = "statusStrip1";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 53);
+            this.label1.Margin = new System.Windows.Forms.Padding(5);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(5);
+            this.label1.Size = new System.Drawing.Size(163, 40);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "test label 1";
             // 
-            // toolStripStatusLabel1
+            // tableLayoutPanel2
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(297, 41);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.textBox1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.textBox2, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.textBox3, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.textBox4, 3, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 101);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1095, 44);
+            this.tableLayoutPanel2.TabIndex = 12;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(4, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 38);
+            this.textBox1.TabIndex = 0;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(104, 2);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 34);
+            this.textBox2.TabIndex = 1;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(204, 2);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(0);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 34);
+            this.textBox3.TabIndex = 2;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(304, 2);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.textBox4.Multiline = true;
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 38);
+            this.textBox4.TabIndex = 3;
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem,
@@ -238,11 +282,21 @@ namespace SyncedLogCompare
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1177, 1078);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(354, 44);
+            this.button3.TabIndex = 13;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // MainCompareWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2348, 1211);
+            this.ClientSize = new System.Drawing.Size(2348, 1274);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -258,8 +312,8 @@ namespace SyncedLogCompare
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTracer)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -283,8 +337,12 @@ namespace SyncedLogCompare
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox tbSearch;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Button button3;
     }
 }
 
