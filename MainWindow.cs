@@ -15,8 +15,6 @@ namespace SyncedLogCompare
 {
     public partial class MainWindow : Form
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -33,103 +31,153 @@ namespace SyncedLogCompare
         }
 
 
+        private BindingList<LogEntry> _entries = new BindingList<LogEntry>();
 
 
-        private void onButtonClick(object sender, MouseEventArgs e)
+        // populate DataGridView with LogEntries, based on path from TextBox
+        private void PopulateDataGridView(DataGridView dataGridView)
         {
-            Console.WriteLine("onButtonClick");
-
-            PopulateDataGridView(dataGridViewMsg);
-            PopulateDataGridView(dataGridViewTbt);
+            // Console.WriteLine(@"tbPathToLogFolder: " + tbPathToLogFolder.Text);
 
 
-            InitializeColumnOrder();
+            LogHandler logHandler = new LogHandler(tbPathToLogFolder.Text);
+            var list = logHandler.LoadLogFiles();
 
-            InitializeDataGridView(dataGridViewMsg);
-            InitializeDataGridView(dataGridViewTbt);
+            //var bindingList = new BindingList<LogEntry>(list);
+            _entries= new BindingList<LogEntry>(list);
 
-            
+            dataGridView.RowCount = _entries.Count;
+
+            dataGridView.DataSource = _entries;
+
+            //dataGridView.RowCount = 1000;
 
 
-            dataGridViewMsg.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewMsg, FileType.TBTracer));
-            //TODO - if to decide which filetype gets hidden -> Messages or MessagesBase
-            dataGridViewTbt.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewTbt, FileType.Messages));
+            Console.WriteLine(_entries.Count);
 
+            //var source = new BindingSource(bindingList, null);
+            //dataGridView.DataSource = source;
+
+
+            // https://sourceforge.net/projects/blw/
+            //BindingListView<LogEntry> view = new BindingListView<LogEntry>(list); // ############################## check if really the way to go !!!!!!!!! 
+            //dataGridView.DataSource = view;
+
+            //Console.WriteLine(view.Count);
 
         }
 
 
-        private void MainCompareWindowForm_Load(object sender, EventArgs e)
+        // needed for BindingListView ?????
+        //private List<LogEntry> list;
+        //private BindingListView<LogEntry> view;
+
+
+        private void dataGridViewMsg_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
-            // Binding Scrollbar
-            this.dataGridViewMsg.Scroll += new ScrollEventHandler(dataGridViewMessage_Scroll);
-            this.dataGridViewTbt.Scroll += new ScrollEventHandler(dataGridViewTracer_Scroll);
+            if (e.RowIndex == dataGridViewMsg.RowCount - 1) return;
+
+            LogEntry tmpLogEntry = null;
+
+            tmpLogEntry = (LogEntry) this._entries[e.RowIndex];
+
+
+
+            //Console.WriteLine("e.RowIndex: " + e.RowIndex + " dataGridViewMsg.RowCount: " + dataGridViewMsg.RowCount);
+
+            switch (this.dataGridViewMsg.Columns[e.ColumnIndex].Name)
+            {
+                case "Severity":
+                    e.Value = tmpLogEntry.Severity;
+                    break;
+
+                case "DateTime":
+                    e.Value = tmpLogEntry.DateTime;
+                    break;
+
+                case "From":
+                    e.Value = tmpLogEntry.From;
+                    break;
+
+                case "Message":
+                    e.Value = tmpLogEntry.Message;
+                    break;
+
+                case "Component":
+                    e.Value = tmpLogEntry.Component;
+                    break;
+
+                case "Device":
+                    e.Value = tmpLogEntry.Device;
+                    break;
+
+                case "FileName":
+                    e.Value = tmpLogEntry.FileName;
+                    break;
+
+                case "FileType":
+                    e.Value = tmpLogEntry.FileType;
+                    break;
+            }
+
         }
-
-
-        private void InitializeColumnOrder()
-        {
-
-            //Hide columns
-            this.dataGridViewMsg.Columns["FileName"].Visible = false;
-            this.dataGridViewMsg.Columns["Device"].Visible = false;
-            this.dataGridViewMsg.Columns["Component"].Visible = false;
-            this.dataGridViewMsg.Columns["FileType"].Visible = false;
-
-            this.dataGridViewTbt.Columns["FileName"].Visible = false;
-            this.dataGridViewTbt.Columns["From"].Visible = false;
-            this.dataGridViewTbt.Columns["FileType"].Visible = false;
-
-            this.dataGridViewMsg.Columns["Severity"].DisplayIndex = 0;
-            this.dataGridViewMsg.Columns["DateTime"].DisplayIndex = 1;
-            this.dataGridViewMsg.Columns["From"].DisplayIndex = 2;
-            this.dataGridViewMsg.Columns["Message"].DisplayIndex = 3;
-
-            this.dataGridViewTbt.Columns["Severity"].DisplayIndex = 0;
-            this.dataGridViewTbt.Columns["DateTime"].DisplayIndex = 1;
-            this.dataGridViewTbt.Columns["Component"].DisplayIndex = 2;
-            this.dataGridViewTbt.Columns["Device"].DisplayIndex = 3;
-            this.dataGridViewTbt.Columns["Message"].DisplayIndex = 4;
-
-        }
-
-
-        // bind scrollbar
-        void dataGridViewMessage_Scroll(object sender, ScrollEventArgs e)
-        {
-            this.dataGridViewTbt.FirstDisplayedScrollingRowIndex = this.dataGridViewMsg.FirstDisplayedScrollingRowIndex;
-        }
-
-        // bind scrollbar
-        void dataGridViewTracer_Scroll(object sender, ScrollEventArgs e)
-        {
-            this.dataGridViewMsg.FirstDisplayedScrollingRowIndex = this.dataGridViewTbt.FirstDisplayedScrollingRowIndex;
-        }
-
-
-        private void dataGridViewMessage_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            tbMsgFilterSeverity.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Severity"].Index].Width;
-            tbMsgFilterDateTime.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["DateTime"].Index].Width;
-            tbMsgFilterFrom.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["From"].Index].Width;
-            tbMsgFilterMessage.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Message"].Index].Width;
-        }
-
-        private void dataGridViewTracer_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            tbTbtFilterSeverity.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Severity"].Index].Width;
-            tbTbtFilterDateTime.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["DateTime"].Index].Width;
-            tbTbtFilterComponent.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Component"].Index].Width;
-            tbTbtFilterDevice.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Device"].Index].Width;
-            tbTbtFilterMessage.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Message"].Index].Width;
-        }
-
-
 
 
         // configures the appearance and behavior of a DataGridView control.
         private void InitializeDataGridView(DataGridView dataGridView)
         {
+            // VIRTUAL MODE ------------------------
+            dataGridView.VirtualMode = true;
+
+            dataGridViewMsg.CellValueNeeded += new DataGridViewCellValueEventHandler(dataGridViewMsg_CellValueNeeded);
+            // -------------------------------------
+
+            // Add columns to the DataGridView.
+            DataGridViewTextBoxColumn msgSeverityColumn = new DataGridViewTextBoxColumn();
+            msgSeverityColumn.HeaderText = "Severity";
+            msgSeverityColumn.Name = "Severity";
+
+            DataGridViewTextBoxColumn msgDateTimeColumn = new DataGridViewTextBoxColumn();
+            msgDateTimeColumn.HeaderText = "DateTime";
+            msgDateTimeColumn.Name = "DateTime";
+
+            DataGridViewTextBoxColumn msgFromColumn = new DataGridViewTextBoxColumn();
+            msgFromColumn.HeaderText = "From";
+            msgFromColumn.Name = "From";
+
+            DataGridViewTextBoxColumn msgMessageColumn = new DataGridViewTextBoxColumn();
+            msgMessageColumn.HeaderText = "Message";
+            msgMessageColumn.Name = "Message";
+
+            DataGridViewTextBoxColumn msgComponentColumn = new DataGridViewTextBoxColumn();
+            msgComponentColumn.HeaderText = "Component";
+            msgComponentColumn.Name = "Component";
+
+            DataGridViewTextBoxColumn msgDeviceColumn = new DataGridViewTextBoxColumn();
+            msgDeviceColumn.HeaderText = "Device";
+            msgDeviceColumn.Name = "Device";
+
+
+            DataGridViewTextBoxColumn msgFileNameColumn = new DataGridViewTextBoxColumn();
+            msgFileNameColumn.HeaderText = "FileName";
+            msgFileNameColumn.Name = "FileName";
+
+            DataGridViewTextBoxColumn msgFileTypeColumn = new DataGridViewTextBoxColumn();
+            msgFileTypeColumn.HeaderText = "FileType";
+            msgFileTypeColumn.Name = "FileType";
+
+
+            dataGridView.Columns.Add(msgSeverityColumn);
+            dataGridView.Columns.Add(msgDateTimeColumn);
+            dataGridView.Columns.Add(msgFromColumn);
+            dataGridView.Columns.Add(msgMessageColumn);
+            dataGridView.Columns.Add(msgComponentColumn);
+            dataGridView.Columns.Add(msgDeviceColumn);
+            dataGridView.Columns.Add(msgFileNameColumn);
+            dataGridView.Columns.Add(msgFileTypeColumn);
+
+
+
             // Initialize basic DataGridView properties.
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.BackgroundColor = Color.LightGray;
@@ -199,6 +247,109 @@ namespace SyncedLogCompare
 
 
 
+
+
+
+
+
+        private void onButtonClick(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("onButtonClick");
+
+            PopulateDataGridView(dataGridViewMsg);
+            PopulateDataGridView(dataGridViewTbt);
+
+
+            dataGridViewMsg.Refresh();
+            dataGridViewTbt.Refresh();
+
+            InitializeDataGridView(dataGridViewMsg);
+            InitializeDataGridView(dataGridViewTbt);
+
+            InitializeColumnOrder();
+
+
+            dataGridViewMsg.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewMsg, FileType.TBTracer));
+            //TODO - if to decide which filetype gets hidden -> Messages or MessagesBase
+            dataGridViewTbt.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewTbt, FileType.Messages));
+
+
+        }
+
+
+        private void MainCompareWindowForm_Load(object sender, EventArgs e)
+        {
+            // Binding Scrollbar
+            this.dataGridViewMsg.Scroll += new ScrollEventHandler(dataGridViewMessage_Scroll);
+            this.dataGridViewTbt.Scroll += new ScrollEventHandler(dataGridViewTracer_Scroll);
+        }
+
+
+        private void InitializeColumnOrder()
+        {
+
+            //Hide columns
+            /*
+
+            this.dataGridViewMsg.Columns["FileName"].Visible = false;
+            this.dataGridViewMsg.Columns["Device"].Visible = false;
+            this.dataGridViewMsg.Columns["Component"].Visible = false;
+            this.dataGridViewMsg.Columns["FileType"].Visible = false;
+
+            this.dataGridViewTbt.Columns["FileName"].Visible = false;
+            this.dataGridViewTbt.Columns["From"].Visible = false;
+            this.dataGridViewTbt.Columns["FileType"].Visible = false;
+
+            this.dataGridViewMsg.Columns["Severity"].DisplayIndex = 0;
+            this.dataGridViewMsg.Columns["DateTime"].DisplayIndex = 1;
+            this.dataGridViewMsg.Columns["From"].DisplayIndex = 2;
+            this.dataGridViewMsg.Columns["Message"].DisplayIndex = 3;
+
+            this.dataGridViewTbt.Columns["Severity"].DisplayIndex = 0;
+            this.dataGridViewTbt.Columns["DateTime"].DisplayIndex = 1;
+            this.dataGridViewTbt.Columns["Component"].DisplayIndex = 2;
+            this.dataGridViewTbt.Columns["Device"].DisplayIndex = 3;
+            this.dataGridViewTbt.Columns["Message"].DisplayIndex = 4;
+
+            */
+
+        }
+
+
+        // bind scrollbar
+        private void dataGridViewMessage_Scroll(object sender, ScrollEventArgs e)
+        {
+            this.dataGridViewTbt.FirstDisplayedScrollingRowIndex = this.dataGridViewMsg.FirstDisplayedScrollingRowIndex;
+        }
+
+        // bind scrollbar
+        private void dataGridViewTracer_Scroll(object sender, ScrollEventArgs e)
+        {
+            this.dataGridViewMsg.FirstDisplayedScrollingRowIndex = this.dataGridViewTbt.FirstDisplayedScrollingRowIndex;
+        }
+
+
+        private void dataGridViewMessage_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            tbMsgFilterSeverity.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Severity"].Index].Width;
+            tbMsgFilterDateTime.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["DateTime"].Index].Width;
+            tbMsgFilterFrom.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["From"].Index].Width;
+            tbMsgFilterMessage.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Message"].Index].Width;
+        }
+
+        private void dataGridViewTracer_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            tbTbtFilterSeverity.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Severity"].Index].Width;
+            tbTbtFilterDateTime.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["DateTime"].Index].Width;
+            tbTbtFilterComponent.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Component"].Index].Width;
+            tbTbtFilterDevice.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Device"].Index].Width;
+            tbTbtFilterMessage.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Message"].Index].Width;
+        }
+
+
+
+
+
         // change cell foreground from "Severity" column, based on cell value
         private void dgvColorSeverity_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -247,6 +398,7 @@ namespace SyncedLogCompare
             */
             #endregion
 
+            /*
             //TODO - possible to disable selection here?
             if (dataGridView.Rows[e.RowIndex].Cells[dataGridView.Columns["FileType"].Index].Value.ToString().Equals(fileType.ToString()))
             {
@@ -258,39 +410,12 @@ namespace SyncedLogCompare
                 e.CellStyle.SelectionForeColor = Color.White;
                 e.CellStyle.ForeColor = Color.White;
             }
+            */
 
         }
 
 
-        // TODO - access "tbPathToLogFolder" in another way and move this out???
-        // populate DataGridView with LogEntries, based on path from TextBox
-        private void PopulateDataGridView(DataGridView dataGridView)
-        {
 
-            Console.WriteLine(@"tbPathToLogFolder: " + tbPathToLogFolder.Text);
-
-            
-            LogHandler logHandler = new LogHandler(tbPathToLogFolder.Text);
-            var list = logHandler.LoadLogFiles();
-
-            var bindingList = new BindingList<LogEntry>(list);
-            var source = new BindingSource(bindingList, null);
-
-            //dataGridView.DataSource = source;
-
-            // https://sourceforge.net/projects/blw/
-            BindingListView<LogEntry> view = new BindingListView<LogEntry>(list); // ############################## check if really the way to go !!!!!!!!! 
-            dataGridView.DataSource = view;
-
-
-            Console.WriteLine(view.Count);
-        }
-
-        private List<LogEntry> list;                //TODO remove after test
-        private BindingListView<LogEntry> view;     //TODO remove after test
-
-
-        //THIS is a TEST
 
 
         // --------------------------------------------
@@ -298,11 +423,13 @@ namespace SyncedLogCompare
         // --------------------------------------------
         private void button3_Click(object sender, EventArgs e)
         {
-            
+         
+            /*
             view.ApplyFilter(delegate(LogEntry logEntry)
             {
                 return logEntry.Message.Contains("####");
             });
+            */
         }
 
 

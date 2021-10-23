@@ -1,5 +1,9 @@
-﻿namespace SyncedLogCompare.log
+﻿using System;
+
+namespace SyncedLogCompare.log
 {
+
+    // TODO - implement IComparable?
     public class LogEntry
     {
         //TODO - add NULL check in Constructor
@@ -33,6 +37,7 @@
         {
             return $"{nameof(Severity)}: {Severity}, {nameof(DateTime)}: {DateTime}, {nameof(Message)}: {Message}, {nameof(From)}: {From}, {nameof(Component)}: {Component}, {nameof(Device)}: {Device}";
         }
+
 
         public string FileType { get; }
 
