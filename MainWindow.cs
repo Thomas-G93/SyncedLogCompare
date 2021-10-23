@@ -290,6 +290,9 @@ namespace SyncedLogCompare
         private BindingListView<LogEntry> view;     //TODO remove after test
 
 
+        //THIS is a TEST
+
+
         // --------------------------------------------
         //TODO - FILTER
         // --------------------------------------------
