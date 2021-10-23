@@ -1,7 +1,6 @@
 ﻿namespace SyncedLogCompare.log
 {
-
-    class LogEntry
+    public class LogEntry
     {
         //TODO - add NULL check in Constructor
 
