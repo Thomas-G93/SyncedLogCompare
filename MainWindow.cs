@@ -16,47 +16,40 @@ namespace SyncedLogCompare
     public partial class MainWindow : Form
     {
 
+        //TODO - resizing of columns (only currently visible) should be done through event handler, based on content which is visible
+
+
 
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         public MainWindow(string pathToLogFolder)
         {
             InitializeComponent();
-
             tbPathToLogFolder.Text = pathToLogFolder;
-
-            
         }
 
 
-
-
-        private void onButtonClick(object sender, MouseEventArgs e)
+        private void btnLoadData_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("onButtonClick");
 
             PopulateDataGridView(dataGridViewMsg);
             PopulateDataGridView(dataGridViewTbt);
 
-
             InitializeColumnOrder();
+            InitializeColumnWidth();
 
             InitializeDataGridView(dataGridViewMsg);
             InitializeDataGridView(dataGridViewTbt);
-
-            
-
 
             dataGridViewMsg.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewMsg, FileType.TBTracer));
             //TODO - if to decide which filetype gets hidden -> Messages or MessagesBase
             dataGridViewTbt.CellFormatting += new DataGridViewCellFormattingEventHandler((s, eArgs) => dgvHideFileType_CellFormatting(s, eArgs, dataGridViewTbt, FileType.Messages));
 
-
         }
+
 
 
         private void MainCompareWindowForm_Load(object sender, EventArgs e)
@@ -66,11 +59,24 @@ namespace SyncedLogCompare
             this.dataGridViewTbt.Scroll += new ScrollEventHandler(dataGridViewTracer_Scroll);
         }
 
+        // bind scrollbar message
+        void dataGridViewMessage_Scroll(object sender, ScrollEventArgs e)
+        {
+            this.dataGridViewTbt.FirstDisplayedScrollingRowIndex = this.dataGridViewMsg.FirstDisplayedScrollingRowIndex;
+        }
 
+        // bind scrollbar tracer
+        void dataGridViewTracer_Scroll(object sender, ScrollEventArgs e)
+        {
+            this.dataGridViewMsg.FirstDisplayedScrollingRowIndex = this.dataGridViewTbt.FirstDisplayedScrollingRowIndex;
+        }
+
+
+        //TODO - less hardcoded way?
         private void InitializeColumnOrder()
         {
 
-            //Hide columns
+            // hide not needed columns
             this.dataGridViewMsg.Columns["FileName"].Visible = false;
             this.dataGridViewMsg.Columns["Device"].Visible = false;
             this.dataGridViewMsg.Columns["Component"].Visible = false;
@@ -80,6 +86,7 @@ namespace SyncedLogCompare
             this.dataGridViewTbt.Columns["From"].Visible = false;
             this.dataGridViewTbt.Columns["FileType"].Visible = false;
 
+            // order columns
             this.dataGridViewMsg.Columns["Severity"].DisplayIndex = 0;
             this.dataGridViewMsg.Columns["DateTime"].DisplayIndex = 1;
             this.dataGridViewMsg.Columns["From"].DisplayIndex = 2;
@@ -93,20 +100,25 @@ namespace SyncedLogCompare
 
         }
 
-
-        // bind scrollbar
-        void dataGridViewMessage_Scroll(object sender, ScrollEventArgs e)
+        private void InitializeColumnWidth()
         {
-            this.dataGridViewTbt.FirstDisplayedScrollingRowIndex = this.dataGridViewMsg.FirstDisplayedScrollingRowIndex;
+
+            this.dataGridViewMsg.Columns["Severity"].Width = 25;
+            this.dataGridViewMsg.Columns["DateTime"].Width = 100;
+            this.dataGridViewMsg.Columns["From"].Width = 100;
+            this.dataGridViewMsg.Columns["Message"].Width = 500;
+
+            this.dataGridViewTbt.Columns["Severity"].Width = 25;
+            this.dataGridViewTbt.Columns["DateTime"].Width = 100;
+            this.dataGridViewTbt.Columns["Component"].Width = 100;
+            this.dataGridViewTbt.Columns["Device"].Width = 100;
+            this.dataGridViewTbt.Columns["Message"].Width = 500;
+
         }
 
-        // bind scrollbar
-        void dataGridViewTracer_Scroll(object sender, ScrollEventArgs e)
-        {
-            this.dataGridViewMsg.FirstDisplayedScrollingRowIndex = this.dataGridViewTbt.FirstDisplayedScrollingRowIndex;
-        }
 
-
+        //TODO - change textboxes to datagridview??? so resize could be bind together
+        // handler for width of filter box message
         private void dataGridViewMessage_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
             tbMsgFilterSeverity.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Severity"].Index].Width;
@@ -115,13 +127,14 @@ namespace SyncedLogCompare
             tbMsgFilterMessage.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Message"].Index].Width;
         }
 
+        // handler for width of filter box tracer
         private void dataGridViewTracer_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            tbTbtFilterSeverity.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Severity"].Index].Width;
-            tbTbtFilterDateTime.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["DateTime"].Index].Width;
-            tbTbtFilterComponent.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Component"].Index].Width;
-            tbTbtFilterDevice.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Device"].Index].Width;
-            tbTbtFilterMessage.Width = dataGridViewMsg.Columns[dataGridViewMsg.Columns["Message"].Index].Width;
+            tbTbtFilterSeverity.Width = dataGridViewTbt.Columns[dataGridViewTbt.Columns["Severity"].Index].Width;
+            tbTbtFilterDateTime.Width = dataGridViewTbt.Columns[dataGridViewTbt.Columns["DateTime"].Index].Width;
+            tbTbtFilterComponent.Width = dataGridViewTbt.Columns[dataGridViewTbt.Columns["Component"].Index].Width;
+            tbTbtFilterDevice.Width = dataGridViewTbt.Columns[dataGridViewTbt.Columns["Device"].Index].Width;
+            tbTbtFilterMessage.Width = dataGridViewTbt.Columns[dataGridViewTbt.Columns["Message"].Index].Width;
         }
 
 
@@ -130,6 +143,9 @@ namespace SyncedLogCompare
         // configures the appearance and behavior of a DataGridView control.
         private void InitializeDataGridView(DataGridView dataGridView)
         {
+
+ 
+
             // Initialize basic DataGridView properties.
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.BackgroundColor = Color.LightGray;
@@ -139,25 +155,24 @@ namespace SyncedLogCompare
             dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToDeleteRows = false;
 
-            dataGridView.AllowUserToOrderColumns = false; //TODO - change? 
+            dataGridView.AllowUserToOrderColumns = false;
             dataGridView.ReadOnly = true;
 
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.MultiSelect = true;                                            //TODO - change?
+            dataGridView.MultiSelect = true;
+
 
             /*
-                        // Set Sizing for Rows and Columns
-                        dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
-                        dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-                        dataGridView.Columns["Severity"].HeaderText = string.Empty;
-                        dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index); // AutoSize to minimum of Severity text
-                        dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index); // AutoSize Message field
-                        dataGridView.AllowUserToResizeColumns = true;
-                        dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-                        dataGridView.AllowUserToResizeRows = false;
-                        dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            // Performance KILLER
+            // Set Sizing for Rows and Columns  
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index); // AutoSize to minimum of Severity text
+            dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index); // AutoSize Message field      
             */
 
+
+
+            dataGridView.Columns["Severity"].HeaderText = string.Empty;
 
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
@@ -168,9 +183,8 @@ namespace SyncedLogCompare
 
 
 
-
             // Set the selection background color for all the cells.
-            dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightGray;        //TODO - change?
+            dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightGray;
             dataGridView.DefaultCellStyle.SelectionForeColor = Color.Black;
 
             // Set RowHeadersDefaultCellStyle.SelectionBackColor so that its default value won't override DataGridView.DefaultCellStyle.SelectionBackColor.
@@ -179,7 +193,7 @@ namespace SyncedLogCompare
 
             // Set the background color for all rows and for alternating rows. The value for alternating rows overrides the value for all rows. 
             dataGridView.RowsDefaultCellStyle.BackColor = Color.White;
-            //dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray; //TODO - maybe enable if it is easier to read
+            //dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
 
             // Set the row and column header styles.
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -198,7 +212,6 @@ namespace SyncedLogCompare
             */
 
             #endregion
-
 
 
             //TODO - move CellFormatting handler out of Initialization ??
@@ -277,7 +290,6 @@ namespace SyncedLogCompare
         // populate DataGridView with LogEntries, based on path from TextBox
         private void PopulateDataGridView(DataGridView dataGridView)
         {
-
             Console.WriteLine(@"tbPathToLogFolder: " + tbPathToLogFolder.Text);
 
             
@@ -287,15 +299,29 @@ namespace SyncedLogCompare
             var bindingList = new BindingList<LogEntry>(list);
             var source = new BindingSource(bindingList, null);
 
-            //dataGridView.DataSource = source;
-
-            // https://sourceforge.net/projects/blw/
-            BindingListView<LogEntry> view = new BindingListView<LogEntry>(list); // ############################## check if really the way to go !!!!!!!!! 
-            dataGridView.DataSource = view;
 
 
-            Console.WriteLine(view.Count);
+            dataGridView.DataSource = source;
+
+            lbRowsLoaded.Text = source.Count.ToString();
+
+
+            //  // https://sourceforge.net/projects/blw/
+            //  BindingListView<LogEntry> view = new BindingListView<LogEntry>(list); // ############################## check if really the way to go !!!!!!!!! 
+            //  dataGridView.DataSource = view;
+            //  Console.WriteLine(view.Count);
         }
+
+
+
+
+
+
+
+
+
+
+        /* get rid of 3rd party dll
 
         private List<LogEntry> list;                //TODO remove after test
         private BindingListView<LogEntry> view;     //TODO remove after test
@@ -313,6 +339,13 @@ namespace SyncedLogCompare
             });
         }
 
+        */
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            dataGridViewMsg.Columns[2].Width =
+                dataGridViewMsg.Width - dataGridViewMsg.Columns[0].Width - dataGridViewMsg.Columns[1].Width - 72;
+        }
 
 
         // --------------------------------------------
@@ -490,5 +523,7 @@ namespace SyncedLogCompare
             }
 
         }
+
+
     }
 }

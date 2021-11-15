@@ -30,7 +30,7 @@ namespace SyncedLogCompare
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnLoadData = new System.Windows.Forms.Button();
             this.scCompare = new System.Windows.Forms.SplitContainer();
             this.tlpMsg = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewMsg = new System.Windows.Forms.DataGridView();
@@ -57,6 +57,7 @@ namespace SyncedLogCompare
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tbPathToLogFolder = new System.Windows.Forms.TextBox();
+            this.lbRowsLoaded = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,16 +79,16 @@ namespace SyncedLogCompare
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btnLoadData
             // 
-            this.button1.Location = new System.Drawing.Point(1459, 2);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(348, 71);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Load Data";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.onButtonClick);
+            this.btnLoadData.Location = new System.Drawing.Point(1459, 2);
+            this.btnLoadData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLoadData.Name = "btnLoadData";
+            this.btnLoadData.Size = new System.Drawing.Size(348, 71);
+            this.btnLoadData.TabIndex = 1;
+            this.btnLoadData.Text = "Load Data";
+            this.btnLoadData.UseVisualStyleBackColor = true;
+            this.btnLoadData.Click += new System.EventHandler(this.btnLoadData_Click);
             // 
             // scCompare
             // 
@@ -134,7 +135,7 @@ namespace SyncedLogCompare
             this.dataGridViewMsg.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridViewMsg.Name = "dataGridViewMsg";
             this.dataGridViewMsg.RowHeadersWidth = 102;
-            this.dataGridViewMsg.RowTemplate.Height = 40;
+            this.dataGridViewMsg.RowTemplate.Height = 20;
             this.dataGridViewMsg.Size = new System.Drawing.Size(875, 559);
             this.dataGridViewMsg.TabIndex = 0;
             this.dataGridViewMsg.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridViewMessage_ColumnWidthChanged);
@@ -285,7 +286,8 @@ namespace SyncedLogCompare
             this.dataGridViewTbt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridViewTbt.Name = "dataGridViewTbt";
             this.dataGridViewTbt.RowHeadersWidth = 102;
-            this.dataGridViewTbt.RowTemplate.Height = 40;
+            this.dataGridViewTbt.RowTemplate.Height = 20;
+            this.dataGridViewTbt.RowTemplate.ReadOnly = true;
             this.dataGridViewTbt.Size = new System.Drawing.Size(874, 559);
             this.dataGridViewTbt.TabIndex = 0;
             this.dataGridViewTbt.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridViewTracer_ColumnWidthChanged);
@@ -300,6 +302,7 @@ namespace SyncedLogCompare
             this.tlpMainStructure.Controls.Add(this.scCompare, 0, 3);
             this.tlpMainStructure.Controls.Add(this.tlpSearch, 1, 1);
             this.tlpMainStructure.Controls.Add(this.tableLayoutPanel7, 0, 0);
+            this.tlpMainStructure.Controls.Add(this.lbRowsLoaded, 0, 4);
             this.tlpMainStructure.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMainStructure.Location = new System.Drawing.Point(0, 49);
             this.tlpMainStructure.Margin = new System.Windows.Forms.Padding(20);
@@ -396,7 +399,7 @@ namespace SyncedLogCompare
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.Controls.Add(this.tbPathToLogFolder, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.button1, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnLoadData, 1, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
@@ -413,9 +416,20 @@ namespace SyncedLogCompare
             this.tbPathToLogFolder.Name = "tbPathToLogFolder";
             this.tbPathToLogFolder.Size = new System.Drawing.Size(1446, 38);
             this.tbPathToLogFolder.TabIndex = 5;
+            this.tbPathToLogFolder.Text = "C:\\Users\\Thomas\\localgit\\SyncedLogCompare\\test.data\\reduced";
+            // 
+            // lbRowsLoaded
+            // 
+            this.lbRowsLoaded.AutoSize = true;
+            this.lbRowsLoaded.Location = new System.Drawing.Point(3, 844);
+            this.lbRowsLoaded.Name = "lbRowsLoaded";
+            this.lbRowsLoaded.Size = new System.Drawing.Size(188, 32);
+            this.lbRowsLoaded.TabIndex = 18;
+            this.lbRowsLoaded.Text = "Rows Loaded";
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem,
@@ -471,6 +485,7 @@ namespace SyncedLogCompare
             this.tlpTbtFilter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTbt)).EndInit();
             this.tlpMainStructure.ResumeLayout(false);
+            this.tlpMainStructure.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tlpSearch.ResumeLayout(false);
@@ -486,7 +501,7 @@ namespace SyncedLogCompare
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLoadData;
         private System.Windows.Forms.SplitContainer scCompare;
         private System.Windows.Forms.DataGridView dataGridViewTbt;
         private System.Windows.Forms.DataGridView dataGridViewMsg;
@@ -517,6 +532,7 @@ namespace SyncedLogCompare
         private System.Windows.Forms.TableLayoutPanel tlpTbt;
         private System.Windows.Forms.TableLayoutPanel tlpSearch;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.Label lbRowsLoaded;
     }
 }
 
