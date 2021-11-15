@@ -34,7 +34,7 @@ namespace SyncedLogCompare.log
                 {
                     //Console.WriteLine(@"Line: " + line); //DEBUG
 
-                    // Check if current line is a new log entry // Long lines could be split in two or more lines
+                    // Check if current line is a new log entry, long lines could be split in two or more lines
                     if (BeginningOfEntry(line))
                     {
                         bufferLine = new StringBuilder(line);

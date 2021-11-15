@@ -145,17 +145,28 @@ namespace SyncedLogCompare
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.MultiSelect = true;                                            //TODO - change?
 
+            /*
+                        // Set Sizing for Rows and Columns
+                        dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+                        dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                        dataGridView.Columns["Severity"].HeaderText = string.Empty;
+                        dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index); // AutoSize to minimum of Severity text
+                        dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index); // AutoSize Message field
+                        dataGridView.AllowUserToResizeColumns = true;
+                        dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+                        dataGridView.AllowUserToResizeRows = false;
+                        dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            */
 
-            // Set Sizing for Rows and Columns
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            dataGridView.Columns["Severity"].HeaderText = string.Empty;
-            dataGridView.AutoResizeColumn(dataGridView.Columns["Severity"].Index); // AutoSize to minimum of Severity text
-            dataGridView.AutoResizeColumn(dataGridView.Columns["Message"].Index); // AutoSize Message field
             dataGridView.AllowUserToResizeColumns = true;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.AllowUserToResizeRows = false;
             dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+
+
 
 
             // Set the selection background color for all the cells.
