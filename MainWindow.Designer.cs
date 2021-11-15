@@ -460,6 +460,52 @@ namespace SyncedLogCompare
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1810, 94);
             this.tableLayoutPanel7.TabIndex = 17;
             // 
+            // tbPathToLogFolder
+            // 
+            this.tbPathToLogFolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbPathToLogFolder.Location = new System.Drawing.Point(5, 5);
+            this.tbPathToLogFolder.Margin = new System.Windows.Forms.Padding(5);
+            this.tbPathToLogFolder.Name = "tbPathToLogFolder";
+            this.tbPathToLogFolder.Size = new System.Drawing.Size(1446, 38);
+            this.tbPathToLogFolder.TabIndex = 5;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem,
+            this.configurationToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1816, 49);
+            this.menuStrip1.TabIndex = 5;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(148, 45);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // configurationToolStripMenuItem
+            // 
+            this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
+            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(224, 45);
+            this.configurationToolStripMenuItem.Text = "Configuration";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // 
+            // 
+            // 
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
