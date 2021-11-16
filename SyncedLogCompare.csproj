@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="log\DateTimeComparerAsc.cs" />
     <Compile Include="log\FileType.cs" />
-    <Compile Include="log\LogEntries.cs" />
     <Compile Include="log\LogEntry.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
