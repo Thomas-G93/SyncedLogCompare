@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SyncedLogCompare.log
 {
-    class LogHandler
+    internal class LogHandler
     {
         private readonly string _path;
 
@@ -15,12 +15,12 @@ namespace SyncedLogCompare.log
             this._path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
-        private List<LogEntry> LoadLogFileEntries(LogFile logFile)
+        private IEnumerable<LogEntry> LoadLogFileEntries(LogFile logFile)
         {
-            List<LogEntry> list = new List<LogEntry>();
+            var list = new List<LogEntry>();
 
 
-            using (StreamReader sr = File.OpenText(_path + "\\" + logFile.FileName))
+            using (var sr = File.OpenText(_path + "\\" + logFile.FileName))
             {
                 var bufferLine = new StringBuilder();
                 string line;
@@ -34,7 +34,7 @@ namespace SyncedLogCompare.log
                 {
                     //Console.WriteLine(@"Line: " + line); //DEBUG
 
-                    // Check if current line is a new log entry // Long lines could be split in two or more lines
+                    // Check if current line is a new log entry, long lines could be split in two or more lines
                     if (BeginningOfEntry(line))
                     {
                         bufferLine = new StringBuilder(line);
@@ -59,26 +59,26 @@ namespace SyncedLogCompare.log
         }
 
         //TODO - Completely rewrite.... maybe need new classes for LOG and TRACER?
-        private List<LogEntry> AddLogEntryToList(string[] strings, LogFile logFile)
+        private static IEnumerable<LogEntry> AddLogEntryToList(IReadOnlyList<string> strings, LogFile logFile)
         {
-            List<LogEntry> list = new List<LogEntry>();
+            var list = new List<LogEntry>();
 
             if (logFile.Parts == 4) //MESSAGE
             {
-                String severity = strings[0].Trim();
-                String dateTime = strings[1].Trim();
-                String from = strings[2].Trim();
-                String message = strings[3].Trim();
+                var severity = strings[0].Trim();
+                var dateTime = strings[1].Trim();
+                var from = strings[2].Trim();
+                var message = strings[3].Trim();
 
                 list.Add(new LogEntry(severity, dateTime, from, message, logFile.FileName, logFile.FileType.ToString()));
             }
             else //TBTRACER //TODO - what if we have more types?
             {
-                String severity = strings[0].Trim();
-                String dateTime = strings[1].Trim();
-                String component = strings[2].Trim();
-                String device = strings[3].Trim();
-                String message = strings[4].Trim();
+                var severity = strings[0].Trim();
+                var dateTime = strings[1].Trim();
+                var component = strings[2].Trim();
+                var device = strings[3].Trim();
+                var message = strings[4].Trim();
 
                 list.Add(new LogEntry(severity, dateTime, component, device, message, logFile.FileName, logFile.FileType.ToString()));
             }
@@ -86,18 +86,14 @@ namespace SyncedLogCompare.log
             return list;
         }
 
-
-        private bool BeginningOfEntry(string line)
+        private static bool BeginningOfEntry(string line)
         {
             return line.StartsWith("(I)") || line.StartsWith("(W)") || line.StartsWith("(E)") || line.StartsWith("(A)");
         }
 
-
-
-
         public List<LogEntry> LoadLogFiles()
         {
-            List<LogEntry> list = new List<LogEntry>();
+            var list = new List<LogEntry>();
 
             var fileList = Directory
                 .EnumerateFiles(_path, "*", SearchOption.AllDirectories)
@@ -106,7 +102,7 @@ namespace SyncedLogCompare.log
             foreach (var file in fileList)
             {
 
-                LogFile logFile = new LogFile(file);
+                var logFile = new LogFile(file);
 
                 //TODO - with radio Button or Checkbox decide which Message Log File Type should be loaded
                 // if (logFile.FileType == FileType.Messages || logFile.FileType == FileType.MessagesBASE || logFile.FileType == FileType.TBTracer)
@@ -122,12 +118,6 @@ namespace SyncedLogCompare.log
 
             return list;
         }
-
-
-
-
-
-
 
     }
 }

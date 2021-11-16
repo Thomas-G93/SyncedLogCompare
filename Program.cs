@@ -17,12 +17,10 @@ namespace SyncedLogCompare
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
-            //Application.Run(new MainWindow());
 
-            Application.Run(new MainWindow("C:\\Users\\Thomas\\localgit\\SyncedLogCompare\\test.data\\reduced\\"));
-
-
+            Application.Run(args.Length > 0 ? 
+                new MainWindow(args[0]) :
+                new MainWindow());
         }
     }
 }
