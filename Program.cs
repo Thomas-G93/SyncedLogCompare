@@ -32,6 +32,8 @@ namespace SyncedLogCompare
             Application.Run(args.Length > 0 ? 
                 new MainWindow(path) :
                 new MainWindow());
+            
+            //TEST
         }
     }
 }
