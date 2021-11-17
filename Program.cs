@@ -33,8 +33,6 @@ namespace SyncedLogCompare
                 new MainWindow(path) :
                 new MainWindow());
             
-            //TEST
-            //2nd Test
         }
     }
 }
