@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Equin.ApplicationFramework;
+//using Equin.ApplicationFramework;
 using SyncedLogCompare.log;
 
 namespace SyncedLogCompare
