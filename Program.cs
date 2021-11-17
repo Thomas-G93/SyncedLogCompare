@@ -29,11 +29,12 @@ namespace SyncedLogCompare
 
             path = path.Trim();
             
-            Application.Run(args.Length > 0 ? 
+            Application.Run(args.Length > 0 ?
                 new MainWindow(path) :
                 new MainWindow());
             
             //TEST
+            //2nd Test
         }
     }
 }
