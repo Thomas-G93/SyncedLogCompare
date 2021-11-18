@@ -19,6 +19,7 @@ namespace SyncedLogCompare
         //TODO - resizing of columns (only currently visible) should be done through event handler, based on content which is visible
 
 
+        //TEST 
 
         public MainWindow()
         {
