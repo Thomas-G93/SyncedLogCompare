@@ -50,6 +50,8 @@ namespace SyncedLogCompare.log
 
                     
                     list.AddRange(AddLogEntryToList(splitLine, logFile));
+                    
+                    //Test
 
                 }
             }

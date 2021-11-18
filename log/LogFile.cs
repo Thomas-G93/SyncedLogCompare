@@ -45,6 +45,7 @@ namespace SyncedLogCompare.log
             return FileType.Unidentified;
         }
 
+        //TODO - when each LOG Type has it's own CLASS should be defined in there!
         private int SetLogParts(FileType fileType)
         {
             if (fileType == FileType.TBTracer)
